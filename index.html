@@ -14,10 +14,13 @@
         #input {
             display: block;
         }
+        body{
+            background: url('https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg')
+        }
     </style>
 </head>
 
-<body>
+<body id="body">
     <div id="demo">
         <input type="text" id="input">
         <div id="image"></div>
@@ -25,6 +28,12 @@
     <script>
 
         document.getElementById('input').focus();
+        
+        //movement of map, not character.
+        let left;
+        let right;
+        let up;
+        let down;
 
         let state = 'down';
         let rightTO;
@@ -35,12 +44,18 @@
         let down2TO;
         let upTO;
         let up2TO;
+
+        let x = 0;
+        let y = 0;
+
+        let xTO;
         
         function walk(event) {
             document.getElementById('input').removeEventListener('keydown', walk);
             
             if (event.keyCode === 39) {
                 right();
+                moveMapLeft()
                 state = 'right';
              
             } if (event.keyCode === 37) {
@@ -65,6 +80,10 @@
             clearTimeout(down2TO);
             clearTimeout(upTO);
             clearTimeout(up2TO);
+            clearTimeout(xTO);
+            
+            left = false;
+
             document.getElementById('input').addEventListener('keydown', walk);
               
               if  (state === 'up') {
@@ -115,7 +134,27 @@
             document.getElementById('image').style.backgroundPosition = "-43px -67px";
             up2TO = setTimeout(up, 180)
         }
-
+        function moveMap(){
+            document.getElementById('body').style.backgroundPosition = `${x}px, ${y}px`;
+        }
+        function moveMapLeft() {
+            moveMap();
+            decreaseX();
+            left = true
+        }
+        function moveMapUp(){
+            moveMap()
+            decreaseY();
+        }
+        function decreaseX() {
+            x--
+            if (left) {
+                xTO = setTimeout(moveMapLeft, 5)
+            }
+        }
+        function decreaseY(){
+            
+        }
         document.getElementById('input').addEventListener('keydown', walk);
         document.getElementById('input').addEventListener('keyup', stopWalking);
 
