@@ -14,8 +14,10 @@
         #input {
             display: block;
         }
-        body{
-            background: url('https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg')
+        #body{
+            height: 100%;
+            width: 100%;
+            background: url('https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg') 0px 0px
         }
     </style>
 </head>
@@ -36,6 +38,7 @@
         let down;
 
         let state = 'down';
+        
         let rightTO;
         let right2TO;
         let leftTO;
@@ -48,30 +51,38 @@
         let x = 0;
         let y = 0;
 
-        let xTO;
+        let xMinusTO;
+        let yMinusTO;
+        let yPlusTO;
+        let xPlusTO;
+    
         
         function walk(event) {
             document.getElementById('input').removeEventListener('keydown', walk);
             
             if (event.keyCode === 39) {
-                right();
+                right1();
                 moveMapLeft()
                 state = 'right';
              
             } if (event.keyCode === 37) {
-                left();
+                left1();
+                moveMapRight();
                 state = 'left';
             
             } if (event.keyCode === 38) {
-                up();
+                up1();
+                moveMapDown();
                 state = 'up';
            
             } if (event.keyCode === 40) {
-                down();
+                down1();
+                moveMapUp();
                 state = 'down';
             }
         }
         function stopWalking(event) {
+            console.log('key up!')
             clearTimeout(rightTO);
             clearTimeout(right2TO);
             clearTimeout(leftTO);
@@ -80,9 +91,16 @@
             clearTimeout(down2TO);
             clearTimeout(upTO);
             clearTimeout(up2TO);
-            clearTimeout(xTO);
-            
+           
+            clearTimeout(yMinusTO);
+            clearTimeout(xMinusTO);
+            clearTimeout(yPlusTO);
+            clearTimeout(xPlusTO);
+
             left = false;
+            up = false;
+            down = false;
+            right = false;
 
             document.getElementById('input').addEventListener('keydown', walk);
               
@@ -101,59 +119,93 @@
 
         }
         
-        function right(){
+        function right1(){
             document.getElementById('image').style.backgroundPosition = "-86px 0px";
                 rightTO = setTimeout(right2, 180);
         }
         function right2(){
                 document.getElementById('image').style.backgroundPosition = "-126px 0px";
-                right2TO = setTimeout(right, 180);
+                right2TO = setTimeout(right1, 180);
         }
-        function left(){
+        function left1(){
                 document.getElementById('image').style.backgroundPosition = "-86px -67px";
                 leftTO = setTimeout(left2, 180)
 
         }
         function left2(){
             document.getElementById('image').style.backgroundPosition = "-126px -67px";
-            left2TO = setTimeout(left, 180)
+            left2TO = setTimeout(left1, 180)
         }
-        function down(){
+        function down1(){
             document.getElementById('image').style.backgroundPosition = "0px 0px";
             downTO = setTimeout(down2, 180);
         }
         function down2(){
             document.getElementById('image').style.backgroundPosition = "-43px 0px";
-            down2TO = setTimeout(down, 180)
+            down2TO = setTimeout(down1, 180)
         }
-        function up(){
+        function up1(){
             document.getElementById('image').style.backgroundPosition = "0px -67px";
             upTO = setTimeout(up2, 180);
         }
         function up2(){
             document.getElementById('image').style.backgroundPosition = "-43px -67px";
-            up2TO = setTimeout(up, 180)
+            up2TO = setTimeout(up1, 180)
         }
+
+        //background movement
+        
+        
         function moveMap(){
             document.getElementById('body').style.backgroundPosition = `${x}px, ${y}px`;
         }
         function moveMapLeft() {
+            left = true;
             moveMap();
             decreaseX();
-            left = true
+        }
+        function moveMapRight() {
+            right = true;
+            moveMap();
+            increaseX();
         }
         function moveMapUp(){
+            up = true;
             moveMap()
             decreaseY();
+            console.log('moveMapUp is called')
         }
+        function moveMapDown(){
+            down = true;
+            moveMap();
+            increaseY();
+        }
+
         function decreaseX() {
-            x--
+            x--;
+            console.log('x is changing! x = ' + x)
             if (left) {
-                xTO = setTimeout(moveMapLeft, 5)
+                xMinusTO = setTimeout(moveMapLeft, 5)
             }
         }
         function decreaseY(){
-            
+            y--;
+            console.log('y is changing! y = ' + y)
+            if (up){
+                yMinusTO = setTimeout(moveMapUp, 5)
+            }
+        }
+        function increaseY(){
+            y++;
+            if(down){
+                yPlusTO - setTimeout(moveMapDown, 5)
+            }
+        }
+        function increaseX(){
+            x++;
+            if (right) {
+                xPlusTO = setTimeout(moveMapRight, 5)
+            }
         }
         document.getElementById('input').addEventListener('keydown', walk);
         document.getElementById('input').addEventListener('keyup', stopWalking);
