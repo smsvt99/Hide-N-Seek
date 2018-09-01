@@ -7,15 +7,15 @@
             width: 48px;
             background: url('newSprites.png') 0px 0px no-repeat;
             position: absolute;
-            left: 48%;
-            top: 48%;
+            left: 680px;
+            top: 400px;
         }
         #paula {
             height: 63px;
             width: 43px;
             background: url('moreSprites.png') 0px 0px no-repeat;
             position: absolute;
-            left: 1000px;
+            left: 1300px;
             top: 500px;
         }
         #input {
@@ -69,7 +69,7 @@
         let yPlusTO;
         let xPlusTO;
 
-        
+
     
         
         function walk(event) {
@@ -94,6 +94,8 @@
                 down1();
                 moveMapUp();
                 state = 'down';
+            } if (event.keyCode === 13){
+                talkToPaula()
             }
         }
         function stopWalking(event) {
@@ -236,9 +238,23 @@
             setTimeout(animatePaula1, 540)
         }
         function positionPaula(){
-            document.getElementById('paula').style.left = `${1000 + x}px`;
+            document.getElementById('paula').style.left = `${1300 + x}px`;
             document.getElementById('paula').style.top = `${500 + y}px`;
             setTimeout(positionPaula, 5)
+        }
+        //TO DO: EVENT LISTENER   left: 680px; top: 400px;
+        function talkToPaula() {
+            if (
+            document.getElementById('paula').style.left.slice(0,-2) > 600
+            &&
+            document.getElementById('paula').style.left.slice(0,-2) < 760
+            &&
+            document.getElementById('paula').style.top.slice(0,-2) > 320
+            &&
+            document.getElementById('paula').style.top.slice(0,-2) < 480
+        ) {
+            alert('Welcome to Greenland!')
+        } else { alert('something went wrong')}
         }
         animatePaula1();
         positionPaula();
