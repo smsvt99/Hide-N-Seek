@@ -11,7 +11,7 @@
 
         #image {
             height: 70px;
-            width: 48px;
+            width: 44px;
             background: url('newSprites.png') 0px 0px no-repeat;
             position: absolute;
             left: 680px;
@@ -210,13 +210,13 @@
             document.getElementById('input').addEventListener('keydown', walk);
 
             if (state === 'up') {
-                document.getElementById('image').style.backgroundPosition = "0px -67px";
+                document.getElementById('image').style.backgroundPosition = "-3px -67px";
 
             } if (state === 'right') {
                 document.getElementById('image').style.backgroundPosition = "-86px 0px";
 
             } if (state === 'down') {
-                document.getElementById('image').style.backgroundPosition = "0px 0px";
+                document.getElementById('image').style.backgroundPosition = "-3px 0px";
 
             } if (state === 'left') {
                 document.getElementById('image').style.backgroundPosition = "-86px -67px";
@@ -225,38 +225,40 @@
         }
 
         function right1() {
-            document.getElementById('image').style.backgroundPosition = "-86px 0px";
+            document.getElementById('image').style.backgroundPosition = "-89px 0px";
             rightTO = setTimeout(right2, 180);
         }
         function right2() {
-            document.getElementById('image').style.backgroundPosition = "-126px 0px";
+            document.getElementById('image').style.backgroundPosition = "-130px 0px";
             right2TO = setTimeout(right1, 180);
         }
 
         function left1() {
-            document.getElementById('image').style.backgroundPosition = "-86px -67px";
+            document.getElementById('image').style.backgroundPosition = "-89px -67px";
             leftTO = setTimeout(left2, 180)
         }
         function left2() {
-            document.getElementById('image').style.backgroundPosition = "-126px -67px";
+            document.getElementById('image').style.backgroundPosition = "-130px -67px";
             left2TO = setTimeout(left1, 180)
         }
 
         function down1() {
-            document.getElementById('image').style.backgroundPosition = "0px 0px";
+            document.getElementById('image').style.backgroundPosition = "-3px 0px";
             downTO = setTimeout(down2, 180);
         }
         function down2() {
-            document.getElementById('image').style.backgroundPosition = "-43px 0px";
+            document.getElementById('image').style.backgroundPosition = "-44px 0px";
             down2TO = setTimeout(down1, 180)
         }
 
         function up1() {
-            document.getElementById('image').style.backgroundPosition = "0px -67px";
+            console.log('up1');
+            document.getElementById('image').style.backgroundPosition = "-3px -67px";
             upTO = setTimeout(up2, 180);
         }
         function up2() {
-            document.getElementById('image').style.backgroundPosition = "-43px -67px";
+            console.log('up2');
+            document.getElementById('image').style.backgroundPosition = "-44px -67px";
             up2TO = setTimeout(up1, 180)
         }
 
