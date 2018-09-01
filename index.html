@@ -5,7 +5,7 @@
         #image {
             height: 70px;
             width: 48px;
-            background: url('sprites.png') 0px 0px no-repeat;
+            background: url('newSprites.png') 0px 0px no-repeat;
             position: absolute;
             left: 48%;
             top: 48%;
@@ -87,7 +87,6 @@
             }
         }
         function stopWalking(event) {
-            console.log('key up!')
             clearTimeout(rightTO);
             clearTimeout(right2TO);
             clearTimeout(leftTO);
@@ -132,15 +131,16 @@
                 document.getElementById('image').style.backgroundPosition = "-126px 0px";
                 right2TO = setTimeout(right1, 180);
         }
+        
         function left1(){
                 document.getElementById('image').style.backgroundPosition = "-86px -67px";
                 leftTO = setTimeout(left2, 180)
-
         }
         function left2(){
             document.getElementById('image').style.backgroundPosition = "-126px -67px";
             left2TO = setTimeout(left1, 180)
         }
+        
         function down1(){
             document.getElementById('image').style.backgroundPosition = "0px 0px";
             downTO = setTimeout(down2, 180);
@@ -149,6 +149,7 @@
             document.getElementById('image').style.backgroundPosition = "-43px 0px";
             down2TO = setTimeout(down1, 180)
         }
+        
         function up1(){
             document.getElementById('image').style.backgroundPosition = "0px -67px";
             upTO = setTimeout(up2, 180);
