@@ -1,7 +1,14 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <style>
+        @font-face {
+            font-family: 'orange_kid';
+            src: url(orange_kid.ttf) format('truetype'),
+            url(orange_kid.woff) format('woff')
+        }
+
         #image {
             height: 70px;
             width: 48px;
@@ -10,6 +17,7 @@
             left: 680px;
             top: 400px;
         }
+
         #paula {
             height: 63px;
             width: 43px;
@@ -18,22 +26,47 @@
             left: 1300px;
             top: 500px;
         }
+
         #input {
-            display: block;
+            z-index: -2;
         }
+
         /* #body{
             height: 100%;
             width: 100%;
             background: url('https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg') 0px 0px no-repeat;
         } */
-        #map{
+
+        #map {
             position: absolute;
+            z-index: -1;
         }
+
+        body p {
+            height: 315px;
+            font-family: 'orange_kid';
+            display: block;
+            background-color: black;
+            color: beige;
+            font-size: 45px;
+            padding: 20px;
+            border-style: groove;
+            border-color: beige;
+            border-width: 8px;
+            border-radius: 10px;
+            letter-spacing: 3px;
+            z-index: 1;
+        }
+        /* body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        } */
     </style>
 </head>
 
 <body id="body">
-    <img id ="map" src="https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg">
+    <img id="map" src="https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg">
 
     <div id="demo">
         <input type="text" id="input">
@@ -43,7 +76,7 @@
     <script>
 
         document.getElementById('input').focus();
-        
+
         //movement of map, not character.
         let left;
         let right;
@@ -51,7 +84,7 @@
         let down;
 
         let state = 'down';
-        
+
         let rightTO;
         let right2TO;
         let leftTO;
@@ -69,35 +102,50 @@
         let yPlusTO;
         let xPlusTO;
 
+        let PaulaTO;
 
-    
-        
+        let score = 0;
+        let boxStatus = 'closed';
+
+        let textBox;
+        let i = 1;
+
+        let randomTop;
+        let randomLeft;
+
+
+
+
         function walk(event) {
             document.getElementById('input').removeEventListener('keydown', walk);
-            
+            console.log(event.keyCode)
+
             if (event.keyCode === 39) {
                 right1();
                 moveMapLeft()
                 state = 'right';
-             
+
             } if (event.keyCode === 37) {
                 left1();
                 moveMapRight();
                 state = 'left';
-            
+
             } if (event.keyCode === 38) {
                 up1();
                 moveMapDown();
                 state = 'up';
-           
+
             } if (event.keyCode === 40) {
                 down1();
                 moveMapUp();
                 state = 'down';
-            } if (event.keyCode === 13){
-                talkToPaula()
+            } if (event.keyCode === 13) {
+                talkToPaula();
+            } if (event.keyCode === 16){
+                endConvo();
             }
-        }
+    
+    }
         function stopWalking(event) {
             clearTimeout(rightTO);
             clearTimeout(right2TO);
@@ -107,7 +155,7 @@
             clearTimeout(down2TO);
             clearTimeout(upTO);
             clearTimeout(up2TO);
-           
+
             clearTimeout(yMinusTO);
             clearTimeout(xMinusTO);
             clearTimeout(yPlusTO);
@@ -119,62 +167,62 @@
             right = false;
 
             document.getElementById('input').addEventListener('keydown', walk);
-              
-              if  (state === 'up') {
+
+            if (state === 'up') {
                 document.getElementById('image').style.backgroundPosition = "0px -67px";
-           
+
             } if (state === 'right') {
                 document.getElementById('image').style.backgroundPosition = "-86px 0px";
-           
+
             } if (state === 'down') {
                 document.getElementById('image').style.backgroundPosition = "0px 0px";
-           
+
             } if (state === 'left') {
                 document.getElementById('image').style.backgroundPosition = "-86px -67px";
             }
 
         }
-        
-        function right1(){
+
+        function right1() {
             document.getElementById('image').style.backgroundPosition = "-86px 0px";
-                rightTO = setTimeout(right2, 180);
+            rightTO = setTimeout(right2, 180);
         }
-        function right2(){
-                document.getElementById('image').style.backgroundPosition = "-126px 0px";
-                right2TO = setTimeout(right1, 180);
+        function right2() {
+            document.getElementById('image').style.backgroundPosition = "-126px 0px";
+            right2TO = setTimeout(right1, 180);
         }
-        
-        function left1(){
-                document.getElementById('image').style.backgroundPosition = "-86px -67px";
-                leftTO = setTimeout(left2, 180)
+
+        function left1() {
+            document.getElementById('image').style.backgroundPosition = "-86px -67px";
+            leftTO = setTimeout(left2, 180)
         }
-        function left2(){
+        function left2() {
             document.getElementById('image').style.backgroundPosition = "-126px -67px";
             left2TO = setTimeout(left1, 180)
         }
-        
-        function down1(){
+
+        function down1() {
             document.getElementById('image').style.backgroundPosition = "0px 0px";
             downTO = setTimeout(down2, 180);
         }
-        function down2(){
+        function down2() {
             document.getElementById('image').style.backgroundPosition = "-43px 0px";
             down2TO = setTimeout(down1, 180)
         }
-        
-        function up1(){
+
+        function up1() {
             document.getElementById('image').style.backgroundPosition = "0px -67px";
             upTO = setTimeout(up2, 180);
         }
-        function up2(){
+        function up2() {
             document.getElementById('image').style.backgroundPosition = "-43px -67px";
             up2TO = setTimeout(up1, 180)
         }
 
         //background movement
-        
-        
-        function moveMap(){
+
+
+        function moveMap() {
             document.getElementById('map').style = `left:${x}px; top:${y}px`;
         }
         function moveMapLeft() {
@@ -187,12 +235,12 @@
             moveMap();
             increaseX();
         }
-        function moveMapUp(){
+        function moveMapUp() {
             up = true;
             moveMap()
             decreaseY();
         }
-        function moveMapDown(){
+        function moveMapDown() {
             down = true;
             moveMap();
             increaseY();
@@ -204,19 +252,19 @@
                 xMinusTO = setTimeout(moveMapLeft, 5)
             }
         }
-        function decreaseY(){
+        function decreaseY() {
             y--;
-            if (up){
+            if (up) {
                 yMinusTO = setTimeout(moveMapUp, 5)
             }
         }
-        function increaseY(){
+        function increaseY() {
             y++;
-            if(down){
+            if (down) {
                 yPlusTO = setTimeout(moveMapDown, 5)
             }
         }
-        function increaseX(){
+        function increaseX() {
             x++;
             if (right) {
                 xPlusTO = setTimeout(moveMapRight, 5)
@@ -228,34 +276,97 @@
 
         //Paula
 
-        function animatePaula1(){
+        function animatePaula1() {
             document.getElementById('paula').style.backgroundPosition = "0px 0px";
             setTimeout(animatePaula2, 540)
 
         }
-        function animatePaula2(){
+        function animatePaula2() {
             document.getElementById('paula').style.backgroundPosition = "-43px 0px";
             setTimeout(animatePaula1, 540)
         }
-        function positionPaula(){
+        function positionPaula() {
             document.getElementById('paula').style.left = `${1300 + x}px`;
             document.getElementById('paula').style.top = `${500 + y}px`;
-            setTimeout(positionPaula, 5)
+            paulaTO = setTimeout(positionPaula, 5)
         }
-        //TO DO: EVENT LISTENER   left: 680px; top: 400px;
+
         function talkToPaula() {
-            if (
-            document.getElementById('paula').style.left.slice(0,-2) > 600
+            if
+            (document.getElementById('paula').style.left.slice(0, -2) > 600
             &&
-            document.getElementById('paula').style.left.slice(0,-2) < 760
+            document.getElementById('paula').style.left.slice(0, -2) < 760
             &&
-            document.getElementById('paula').style.top.slice(0,-2) > 320
+            document.getElementById('paula').style.top.slice(0, -2) > 320
             &&
-            document.getElementById('paula').style.top.slice(0,-2) < 480
-        ) {
-            alert('Welcome to Greenland!')
-        } else { alert('something went wrong')}
+            document.getElementById('paula').style.top.slice(0, -2) < 480 
+            &&
+            boxStatus === 'closed')
+            {
+
+                boxStatus = 'open'
+
+                textBox = document.createElement('p');
+                
+                var linebreak1 = document.createElement('br');
+                var linebreak2 = document.createElement('br');
+                var linebreak3 = document.createElement('br');
+                var linebreak4 = document.createElement('br');
+                
+                var text = document.createTextNode("Velkommen til Grønland!");
+                textBox.appendChild(text);
+                textBox.appendChild(linebreak1);
+                textBox.appendChild(linebreak2);
+                var text2 = document.createTextNode("Let's play hide and seek! I will give you 1 point each time you find me. Hee hee!");
+                textBox.appendChild(text2);
+                textBox.appendChild(linebreak3)
+                textBox.appendChild(linebreak4)
+                var text3 = document.createTextNode("Press SHIFT to play." );
+                textBox.appendChild(text3);
+                document.body.appendChild(textBox);
+                
+            }
         }
+        function endConvo() {
+            textBox.remove();
+            boxStatus = 'closed'
+            startGame();
+        }
+        function startGame(){
+            clearTimeout(paulaTO);
+            paulaRunsAway();
+            playMusic();
+        }
+        function paulaRunsAway(){
+            // console.log(document.getElementById('paula').style.top)
+            // console.log(i)
+            document.getElementById('paula').style.top = `${500 + y + i}px`;
+            setTimeout(increaseI, 20);
+        }
+        function increaseI(){
+            if (i < 1000){
+                i = i + 10
+                paulaRunsAway();
+            } else {
+                i = 1;
+                setTimeout(sheReappearsElsewhere, 1000)
+            }
+        }
+        function playMusic(){
+            var music = new Audio('katiesWaltz.mp3')
+            music.play()
+        }
+        function sheReappearsElsewhere() {
+            //topleft: (601,365) bottomleft: (601, -4340), bottomright: (-6469, -4340), topright: (-6469, 365)
+            randomTop = Math.floor(Math.random() * (365 - 4340 + 1)) + 4340;
+            console.log(randomTop)
+            randomLeft = Math.floor(Math.random() * (601 - 6469 + 1)) + 6469;
+            console.log(randomLeft)
+            document.getElementById('paula').style.top = randomTop + 'px';
+            document.getElementById('paula').style.left = randomLeft + 'px';
+            // var newPaulaTO = setTimeout()
+        }
+        
         animatePaula1();
         positionPaula();
 
