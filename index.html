@@ -290,25 +290,25 @@
         }
 
         function decreaseX() {
-            x--;
+            x = x - 4;
             if (left) {
                 xMinusTO = setTimeout(moveMapLeft, 5)
             }
         }
         function decreaseY() {
-            y--;
+            y = y - 4;
             if (up) {
                 yMinusTO = setTimeout(moveMapUp, 5)
             }
         }
         function increaseY() {
-            y++;
+            y = y + 4;
             if (down) {
                 yPlusTO = setTimeout(moveMapDown, 5)
             }
         }
         function increaseX() {
-            x++;
+            x = x + 4;
             if (right) {
                 xPlusTO = setTimeout(moveMapRight, 5)
             }
