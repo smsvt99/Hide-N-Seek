@@ -43,25 +43,44 @@
         }
 
         body p {
-            height: 315px;
+            height: 250px;
+            width: 60%;
             font-family: 'orange_kid';
             display: block;
             background-color: black;
             color: beige;
-            font-size: 45px;
+            font-size: 36px;
             padding: 20px;
             border-style: groove;
             border-color: beige;
             border-width: 8px;
             border-radius: 10px;
-            letter-spacing: 3px;
+            letter-spacing: 5px;
             z-index: 1;
         }
-        /* body {
+        body {
             margin: 0;
             height: 100%;
             overflow: hidden;
-        } */
+        }
+        #nameEntry {
+            height: 250px;
+            width: 60%;
+            font-family: 'orange_kid';
+            display: block;
+            background-color: black;
+            color: beige;
+            font-size: 36px;
+            padding: 20px;
+            border-style: groove;
+            border-color: beige;
+            border-width: 8px;
+            border-radius: 10px;
+            letter-spacing: 5px;
+            z-index: 1;
+            display: none;
+
+        }
     </style>
 </head>
 
@@ -70,6 +89,16 @@
 
     <div id="demo">
         <input type="text" id="input">
+        <div id ="nameEntry">
+            <form>
+                <span id="nameEntryText"></span>
+                <br/><br/>
+                <span>Please enter your name.</span>
+                <br/><br/>
+                <input type="text" id="name">
+                <input type="submit">
+            </form>
+        </div>
         <div id="paula"></div>
         <div id="image"></div>
     </div>
@@ -113,17 +142,25 @@
         let randomTop;
         let randomLeft;
 
+        let gameHasBegun = false;
+
+        var music = new Audio('katiesWaltz.mp3')
+        var wind = new Audio('wind.mp3')
+
+
 
 
 
         function walk(event) {
             document.getElementById('input').removeEventListener('keydown', walk);
             console.log(event.keyCode)
-
             if (event.keyCode === 39) {
                 right1();
                 moveMapLeft()
                 state = 'right';
+                if (!gameHasBegun){
+                    wind.play();
+                }
 
             } if (event.keyCode === 37) {
                 left1();
@@ -139,10 +176,14 @@
                 down1();
                 moveMapUp();
                 state = 'down';
+            
             } if (event.keyCode === 13) {
                 talkToPaula();
-            } if (event.keyCode === 16){
+            
+            } if (event.keyCode === 16 && boxStatus === 'open'){
                 endConvo();
+            } if (event.keyCode === 81 && boxStatus === 'open' && score > 0){
+                enterScore();
             }
     
     }
@@ -286,9 +327,16 @@
             setTimeout(animatePaula1, 540)
         }
         function positionPaula() {
+            if (gameHasBegun === false){
             document.getElementById('paula').style.left = `${1300 + x}px`;
             document.getElementById('paula').style.top = `${500 + y}px`;
             paulaTO = setTimeout(positionPaula, 5)
+            
+            } else if (gameHasBegun === true){
+            document.getElementById('paula').style.left = `${randomLeft + x}px`;
+            document.getElementById('paula').style.top = `${randomTop + y}px`;
+            paulaTO = setTimeout(positionPaula, 5)
+            }
         }
 
         function talkToPaula() {
@@ -301,32 +349,59 @@
             &&
             document.getElementById('paula').style.top.slice(0, -2) < 480 
             &&
-            boxStatus === 'closed')
-            {
+            boxStatus === 'closed') {
+                if (gameHasBegun === false){
+                    boxStatus = 'open'
 
-                boxStatus = 'open'
+                    textBox = document.createElement('p');
+                    
+                    var linebreak1 = document.createElement('br');
+                    var linebreak2 = document.createElement('br');
+                    var linebreak3 = document.createElement('br');
+                    var linebreak4 = document.createElement('br');
+                    
+                    var text = document.createTextNode("Velkommen til Grønland!");
+                    textBox.appendChild(text);
+                    textBox.appendChild(linebreak1);
+                    textBox.appendChild(linebreak2);
+                    var text2 = document.createTextNode("Let's play hide and seek! I will give you 1 point each time you find me. Hee hee!");
+                    textBox.appendChild(text2);
+                    textBox.appendChild(linebreak3)
+                    textBox.appendChild(linebreak4)
+                    var text3 = document.createTextNode("Press 'SHIFT' to play." );
+                    textBox.appendChild(text3);
+                    document.body.appendChild(textBox);
+                
+                } else if (gameHasBegun === true) {
+                    
+                    score = score + 1;
+                    boxStatus = 'open'
+                    // gameHasBegun = false;
+                    stopMusic()
 
-                textBox = document.createElement('p');
-                
-                var linebreak1 = document.createElement('br');
-                var linebreak2 = document.createElement('br');
-                var linebreak3 = document.createElement('br');
-                var linebreak4 = document.createElement('br');
-                
-                var text = document.createTextNode("Velkommen til Grønland!");
-                textBox.appendChild(text);
-                textBox.appendChild(linebreak1);
-                textBox.appendChild(linebreak2);
-                var text2 = document.createTextNode("Let's play hide and seek! I will give you 1 point each time you find me. Hee hee!");
-                textBox.appendChild(text2);
-                textBox.appendChild(linebreak3)
-                textBox.appendChild(linebreak4)
-                var text3 = document.createTextNode("Press SHIFT to play." );
-                textBox.appendChild(text3);
-                document.body.appendChild(textBox);
-                
+                    textBox = document.createElement('p');
+
+                    var linebreak1 = document.createElement('br');
+                    var linebreak2 = document.createElement('br');
+                    var linebreak3 = document.createElement('br');
+                    var linebreak4 = document.createElement('br');
+
+                    var text = document.createTextNode("Golly! You sure are good at Hide and Seek!");
+                    textBox.appendChild(text);
+                    textBox.appendChild(linebreak1);
+                    textBox.appendChild(linebreak2);
+                    var text2 = document.createTextNode(`Your score is now ${score}. Good job, hee hee!`);
+                    textBox.appendChild(text2);
+                    textBox.appendChild(linebreak3)
+                    textBox.appendChild(linebreak4)
+                    var text3 = document.createTextNode("Press 'SHIFT' to play again, or 'Q' to quit and post your score to the leaderboard.");
+                    textBox.appendChild(text3);
+                    document.body.appendChild(textBox);
+
             }
         }
+    }
+        
         function endConvo() {
             textBox.remove();
             boxStatus = 'closed'
@@ -336,12 +411,16 @@
             clearTimeout(paulaTO);
             paulaRunsAway();
             playMusic();
+            gameHasBegun = true;
         }
         function paulaRunsAway(){
-            // console.log(document.getElementById('paula').style.top)
-            // console.log(i)
+            if (!randomTop) {
             document.getElementById('paula').style.top = `${500 + y + i}px`;
             setTimeout(increaseI, 20);
+            } else {
+            document.getElementById('paula').style.top = `${randomTop + y + i}px`;
+            setTimeout(increaseI, 20);
+            }
         }
         function increaseI(){
             if (i < 1000){
@@ -349,27 +428,33 @@
                 paulaRunsAway();
             } else {
                 i = 1;
-                setTimeout(sheReappearsElsewhere, 1000)
+                setTimeout(sheReappearsElsewhere, 100)
             }
         }
         function playMusic(){
-            var music = new Audio('katiesWaltz.mp3')
             music.play()
+            wind.pause()
+        }
+        function stopMusic(){
+            music.pause()
+            wind.play()
         }
         function sheReappearsElsewhere() {
             //topleft: (601,365) bottomleft: (601, -4340), bottomright: (-6469, -4340), topright: (-6469, 365)
             randomTop = Math.floor(Math.random() * (365 - 4340 + 1)) + 4340;
-            console.log(randomTop)
             randomLeft = Math.floor(Math.random() * (601 - 6469 + 1)) + 6469;
-            console.log(randomLeft)
             document.getElementById('paula').style.top = randomTop + 'px';
             document.getElementById('paula').style.left = randomLeft + 'px';
-            // var newPaulaTO = setTimeout()
+            positionPaula()
+        }
+        function enterScore(){
+            textBox.remove();
+            document.getElementById('nameEntry').style.display = 'block';
+            document.getElementById('nameEntryText').textContent = `Your score is ${score}. Nice!`
         }
         
         animatePaula1();
         positionPaula();
-
     </script>
 </body>
 
