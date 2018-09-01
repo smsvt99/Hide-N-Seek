@@ -14,15 +14,20 @@
         #input {
             display: block;
         }
-        #body{
+        /* #body{
             height: 100%;
             width: 100%;
-            background: url('https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg') 0px 0px
+            background: url('https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg') 0px 0px no-repeat;
+        } */
+        #map{
+            position: absolute;
         }
     </style>
 </head>
 
 <body id="body">
+    <img id ="map" src="https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg">
+
     <div id="demo">
         <input type="text" id="input">
         <div id="image"></div>
@@ -157,7 +162,7 @@
         
         
         function moveMap(){
-            document.getElementById('body').style.backgroundPosition = `${x}px, ${y}px`;
+            document.getElementById('map').style = `left:${x}px; top:${y}px`;
         }
         function moveMapLeft() {
             left = true;
@@ -173,7 +178,6 @@
             up = true;
             moveMap()
             decreaseY();
-            console.log('moveMapUp is called')
         }
         function moveMapDown(){
             down = true;
@@ -183,14 +187,12 @@
 
         function decreaseX() {
             x--;
-            console.log('x is changing! x = ' + x)
             if (left) {
                 xMinusTO = setTimeout(moveMapLeft, 5)
             }
         }
         function decreaseY(){
             y--;
-            console.log('y is changing! y = ' + y)
             if (up){
                 yMinusTO = setTimeout(moveMapUp, 5)
             }
@@ -198,7 +200,7 @@
         function increaseY(){
             y++;
             if(down){
-                yPlusTO - setTimeout(moveMapDown, 5)
+                yPlusTO = setTimeout(moveMapDown, 5)
             }
         }
         function increaseX(){
