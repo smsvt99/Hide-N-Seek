@@ -10,7 +10,14 @@
             left: 48%;
             top: 48%;
         }
-
+        #paula {
+            height: 63px;
+            width: 43px;
+            background: url('moreSprites.png') 0px 0px no-repeat;
+            position: absolute;
+            left: 1000px;
+            top: 500px;
+        }
         #input {
             display: block;
         }
@@ -30,6 +37,7 @@
 
     <div id="demo">
         <input type="text" id="input">
+        <div id="paula"></div>
         <div id="image"></div>
     </div>
     <script>
@@ -60,6 +68,8 @@
         let yMinusTO;
         let yPlusTO;
         let xPlusTO;
+
+        
     
         
         function walk(event) {
@@ -210,8 +220,28 @@
                 xPlusTO = setTimeout(moveMapRight, 5)
             }
         }
+
         document.getElementById('input').addEventListener('keydown', walk);
         document.getElementById('input').addEventListener('keyup', stopWalking);
+
+        //Paula
+
+        function animatePaula1(){
+            document.getElementById('paula').style.backgroundPosition = "0px 0px";
+            setTimeout(animatePaula2, 540)
+
+        }
+        function animatePaula2(){
+            document.getElementById('paula').style.backgroundPosition = "-43px 0px";
+            setTimeout(animatePaula1, 540)
+        }
+        function positionPaula(){
+            document.getElementById('paula').style.left = `${1000 + x}px`;
+            document.getElementById('paula').style.top = `${500 + y}px`;
+            setTimeout(positionPaula, 5)
+        }
+        animatePaula1();
+        positionPaula();
 
     </script>
 </body>
