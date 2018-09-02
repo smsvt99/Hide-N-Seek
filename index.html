@@ -193,7 +193,8 @@
         let timerTO;
         let timer2TO;
 
-        noTimer = true;
+        let noTimer = true;
+        let gameOver = false;
 
 
 
@@ -226,7 +227,7 @@
             } if (event.keyCode === 13) {
                 talkToPaula();
 
-            } if (event.keyCode === 16 && boxStatus === 'open') {
+            } if (event.keyCode === 16 && boxStatus === 'open' && !gameOver) {
                 endConvo();
             } if (event.keyCode === 81 && boxStatus === 'open' && score > 0) {
                 enterScore();
@@ -334,27 +335,55 @@
         }
 
         function decreaseX() {
-            x = x - 4;
-            if (left) {
-                xMinusTO = setTimeout(moveMapLeft, 5)
+            if (!gameHasBegun){
+                x = x - 1
+                if (left) {
+                    xMinusTO = setTimeout(moveMapLeft, 10)
+                }
+            } else {
+                x = x - 4;
+                if (left) {
+                    xMinusTO = setTimeout(moveMapLeft, 5)
+                }
             }
         }
         function decreaseY() {
-            y = y - 4;
-            if (up) {
-                yMinusTO = setTimeout(moveMapUp, 5)
+            if (!gameHasBegun){
+                y = y - 1
+                if (up) {
+                    yMinusTO = setTimeout(moveMapUp, 10)
+                }
+            } else {
+                y = y - 4;
+                if (up) {
+                    yMinusTO = setTimeout(moveMapUp, 5)
+                }
             }
         }
         function increaseY() {
-            y = y + 4;
+            if (!gameHasBegun){
+            y = y + 1
             if (down) {
-                yPlusTO = setTimeout(moveMapDown, 5)
+                    yPlusTO = setTimeout(moveMapDown, 10)
+                }
+            } else {
+                y = y + 4;
+                if (down) {
+                    yPlusTO = setTimeout(moveMapDown, 5)
+                }
             }
         }
         function increaseX() {
-            x = x + 4;
-            if (right) {
-                xPlusTO = setTimeout(moveMapRight, 5)
+            if (!gameHasBegun){
+                x = x + 1 
+                if (right) {
+                    xPlusTO = setTimeout(moveMapRight, 10)
+                }
+            } else {
+                x = x + 4;
+                if (right) {
+                    xPlusTO = setTimeout(moveMapRight, 5)
+                }
             }
         }
 
@@ -453,7 +482,6 @@
             startGame();
         }
         function startGame() {
-            console.log('startGame calls timer')
             clearTimeout(paulaTO);
             paulaRunsAway();
             playMusic();
@@ -502,7 +530,6 @@
         }
         function timer() {
             if (!noTimer) {
-            console.log('timer!')
             document.getElementById('timerDisplay').style.display = 'block';
             document.getElementById('timerDisplayText').textContent = time;
             var timerTO = setTimeout(updateTimer, 1000)
@@ -510,7 +537,6 @@
 
         }
         function updateTimer() {
-            (console.log('updateTimer!'))
             if (time > 0) {
                 time = time - 1
                 timer()
@@ -520,6 +546,7 @@
                 whistle.play();
                 time = 60;
                 stopMusic();
+                timeIsUp()
             }
         }
         function stopTimer(){
@@ -529,6 +556,49 @@
             time = 60;
             clearTimeout(timerTO);
             noTimer = true;
+        }
+        function timeIsUp(){
+                    gameOver = true;
+                    boxStatus = 'open';
+                    // gameHasBegun = false;
+                    stopMusic();
+                    textBox = document.createElement('p');
+
+                    var linebreak1 = document.createElement('br');
+                    var linebreak2 = document.createElement('br');
+                    var linebreak3 = document.createElement('br');
+                    var linebreak4 = document.createElement('br');
+
+                    if (score > 0) {
+                    
+                    var text = document.createTextNode("Time is up! I'm a pretty good hider, right?");
+                    textBox.appendChild(text);
+                    textBox.appendChild(linebreak1);
+                    textBox.appendChild(linebreak2);
+                    var text2 = document.createTextNode(`Your score was ${score}. Good job, hee hee!`);
+                    textBox.appendChild(text2);
+                    textBox.appendChild(linebreak3)
+                    textBox.appendChild(linebreak4)
+                    var text3 = document.createTextNode("Press 'Q' to quit and post your score to the leaderboard.");
+                    textBox.appendChild(text3);
+                    document.body.appendChild(textBox);
+                    stopTimer();
+                    
+                    } else {
+
+                    var text = document.createTextNode("Time is up! I'm a pretty good hider, right?");
+                    textBox.appendChild(text);
+                    textBox.appendChild(linebreak1);
+                    textBox.appendChild(linebreak2);
+                    var text2 = document.createTextNode(`Your score was ${score}. You couldn't even find me once? hee hee!`);
+                    textBox.appendChild(text2);
+                    textBox.appendChild(linebreak3)
+                    textBox.appendChild(linebreak4)
+                    var text3 = document.createTextNode("Game Over. Refresh the page to try again.");
+                    textBox.appendChild(text3);
+                    document.body.appendChild(textBox);
+                    stopTimer();
+                    }
         }
 
         animatePaula1();
