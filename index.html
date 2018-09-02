@@ -58,11 +58,13 @@
             letter-spacing: 5px;
             z-index: 1;
         }
+
         body {
             margin: 0;
             height: 100%;
             overflow: hidden;
         }
+
         #nameEntry {
             height: 250px;
             width: 60%;
@@ -79,7 +81,38 @@
             letter-spacing: 5px;
             z-index: 1;
             display: none;
+        }
 
+        #timerDisplay {
+            height: 150px;
+            width: 150px;
+            font-family: 'orange_kid';
+            display: block;
+            background-color: black;
+            color: #f5f5dc;
+            font-size: 45px;
+            border-style: groove;
+            border-color: beige;
+            border-width: 8px;
+            border-radius: 10px;
+            letter-spacing: 5px;
+            z-index: 1;
+            padding: 0px;
+            margin: 0px;
+            opacity: .5;
+            position: absolute;
+            left: 2%;
+            top: 80%;
+            display: none;
+        }
+
+        #timerDisplay h1 {
+            text-align: center;
+            position: relative;
+            left: 5%;
+            top: 7%;
+            padding: 0px;
+            margin: 0px;
         }
     </style>
 </head>
@@ -89,20 +122,26 @@
 
     <div id="demo">
         <input type="text" id="input">
-        <div id ="nameEntry">
+        <div id="nameEntry">
             <form>
                 <span id="nameEntryText"></span>
-                <br/><br/>
+                <br/>
+                <br/>
                 <span>Please enter your name.</span>
-                <br/><br/>
+                <br/>
+                <br/>
                 <input type="text" id="name">
                 <input type="submit">
             </form>
         </div>
         <div id="paula"></div>
         <div id="image"></div>
+        <div id="timerDisplay">
+            <h1 id="timerDisplayText"></h1>
+        </div>
     </div>
     <script>
+        // TO DO: disable motion, visible timer, visible score, whistle sound, sound and animation for text
 
         document.getElementById('input').focus();
 
@@ -144,49 +183,56 @@
 
         let gameHasBegun = false;
 
-        var music = new Audio('katiesWaltz.mp3')
-        var wind = new Audio('wind.mp3')
+        var music = new Audio('katiesWaltz.mp3');
+        var wind = new Audio('wind.mp3');
+        var whistle = new Audio('whistle.mp3');
 
+        let disableMovement = false;
+        let time = 60;
 
+        let timerTO;
+        let timer2TO;
+
+        noTimer = true;
 
 
 
         function walk(event) {
             document.getElementById('input').removeEventListener('keydown', walk);
-            console.log(event.keyCode)
-            if (event.keyCode === 39) {
+            // console.log(event.keyCode)
+            if (event.keyCode === 39 && !disableMovement) {
                 right1();
                 moveMapLeft()
                 state = 'right';
-                if (!gameHasBegun){
+                if (!gameHasBegun) {
                     wind.play();
                 }
 
-            } if (event.keyCode === 37) {
+            } if (event.keyCode === 37 && !disableMovement) {
                 left1();
                 moveMapRight();
                 state = 'left';
 
-            } if (event.keyCode === 38) {
+            } if (event.keyCode === 38 && !disableMovement) {
                 up1();
                 moveMapDown();
                 state = 'up';
 
-            } if (event.keyCode === 40) {
+            } if (event.keyCode === 40 && !disableMovement) {
                 down1();
                 moveMapUp();
                 state = 'down';
-            
+
             } if (event.keyCode === 13) {
                 talkToPaula();
-            
-            } if (event.keyCode === 16 && boxStatus === 'open'){
+
+            } if (event.keyCode === 16 && boxStatus === 'open') {
                 endConvo();
-            } if (event.keyCode === 81 && boxStatus === 'open' && score > 0){
+            } if (event.keyCode === 81 && boxStatus === 'open' && score > 0) {
                 enterScore();
             }
-    
-    }
+
+        }
         function stopWalking(event) {
             clearTimeout(rightTO);
             clearTimeout(right2TO);
@@ -252,12 +298,10 @@
         }
 
         function up1() {
-            console.log('up1');
             document.getElementById('image').style.backgroundPosition = "-3px -67px";
             upTO = setTimeout(up2, 180);
         }
         function up2() {
-            console.log('up2');
             document.getElementById('image').style.backgroundPosition = "-44px -67px";
             up2TO = setTimeout(up1, 180)
         }
@@ -329,15 +373,15 @@
             setTimeout(animatePaula1, 540)
         }
         function positionPaula() {
-            if (gameHasBegun === false){
-            document.getElementById('paula').style.left = `${1300 + x}px`;
-            document.getElementById('paula').style.top = `${500 + y}px`;
-            paulaTO = setTimeout(positionPaula, 5)
-            
-            } else if (gameHasBegun === true){
-            document.getElementById('paula').style.left = `${randomLeft + x}px`;
-            document.getElementById('paula').style.top = `${randomTop + y}px`;
-            paulaTO = setTimeout(positionPaula, 5)
+            if (gameHasBegun === false) {
+                document.getElementById('paula').style.left = `${1300 + x}px`;
+                document.getElementById('paula').style.top = `${500 + y}px`;
+                paulaTO = setTimeout(positionPaula, 5)
+
+            } else if (gameHasBegun === true) {
+                document.getElementById('paula').style.left = `${randomLeft + x}px`;
+                document.getElementById('paula').style.top = `${randomTop + y}px`;
+                paulaTO = setTimeout(positionPaula, 5)
             }
         }
 
@@ -349,19 +393,19 @@
             &&
             document.getElementById('paula').style.top.slice(0, -2) > 320
             &&
-            document.getElementById('paula').style.top.slice(0, -2) < 480 
+            document.getElementById('paula').style.top.slice(0, -2) < 480
             &&
             boxStatus === 'closed') {
-                if (gameHasBegun === false){
+                if (gameHasBegun === false) {
                     boxStatus = 'open'
 
                     textBox = document.createElement('p');
-                    
+
                     var linebreak1 = document.createElement('br');
                     var linebreak2 = document.createElement('br');
                     var linebreak3 = document.createElement('br');
                     var linebreak4 = document.createElement('br');
-                    
+
                     var text = document.createTextNode("Velkommen til Grønland!");
                     textBox.appendChild(text);
                     textBox.appendChild(linebreak1);
@@ -370,17 +414,16 @@
                     textBox.appendChild(text2);
                     textBox.appendChild(linebreak3)
                     textBox.appendChild(linebreak4)
-                    var text3 = document.createTextNode("Press 'SHIFT' to play." );
+                    var text3 = document.createTextNode("Press 'SHIFT' to play.");
                     textBox.appendChild(text3);
                     document.body.appendChild(textBox);
-                
-                } else if (gameHasBegun === true) {
-                    
-                    score = score + 1;
-                    boxStatus = 'open'
-                    // gameHasBegun = false;
-                    stopMusic()
 
+                } else if (gameHasBegun === true) {
+
+                    score = score + 1;
+                    boxStatus = 'open';
+                    // gameHasBegun = false;
+                    stopMusic();
                     textBox = document.createElement('p');
 
                     var linebreak1 = document.createElement('br');
@@ -399,33 +442,36 @@
                     var text3 = document.createTextNode("Press 'SHIFT' to play again, or 'Q' to quit and post your score to the leaderboard.");
                     textBox.appendChild(text3);
                     document.body.appendChild(textBox);
-
+                    stopTimer();
+                }
             }
         }
-    }
-        
+
         function endConvo() {
             textBox.remove();
             boxStatus = 'closed'
             startGame();
         }
-        function startGame(){
+        function startGame() {
+            console.log('startGame calls timer')
             clearTimeout(paulaTO);
             paulaRunsAway();
             playMusic();
             gameHasBegun = true;
+            noTimer = false;
+            timer();
         }
-        function paulaRunsAway(){
+        function paulaRunsAway() {
             if (!randomTop) {
-            document.getElementById('paula').style.top = `${500 + y + i}px`;
-            setTimeout(increaseI, 20);
+                document.getElementById('paula').style.top = `${500 + y + i}px`;
+                setTimeout(increaseI, 20);
             } else {
-            document.getElementById('paula').style.top = `${randomTop + y + i}px`;
-            setTimeout(increaseI, 20);
+                document.getElementById('paula').style.top = `${randomTop + y + i}px`;
+                setTimeout(increaseI, 20);
             }
         }
-        function increaseI(){
-            if (i < 1000){
+        function increaseI() {
+            if (i < 1000) {
                 i = i + 10
                 paulaRunsAway();
             } else {
@@ -433,11 +479,11 @@
                 setTimeout(sheReappearsElsewhere, 100)
             }
         }
-        function playMusic(){
+        function playMusic() {
             music.play()
             wind.pause()
         }
-        function stopMusic(){
+        function stopMusic() {
             music.pause()
             wind.play()
         }
@@ -449,12 +495,42 @@
             document.getElementById('paula').style.left = randomLeft + 'px';
             positionPaula()
         }
-        function enterScore(){
+        function enterScore() {
             textBox.remove();
             document.getElementById('nameEntry').style.display = 'block';
-            document.getElementById('nameEntryText').textContent = `Your score is ${score}. Nice!`
+            document.getElementById('nameEntryText').textContent = `Your score was ${score}. Nice!`
         }
-        
+        function timer() {
+            if (!noTimer) {
+            console.log('timer!')
+            document.getElementById('timerDisplay').style.display = 'block';
+            document.getElementById('timerDisplayText').textContent = time;
+            var timerTO = setTimeout(updateTimer, 1000)
+            }
+
+        }
+        function updateTimer() {
+            (console.log('updateTimer!'))
+            if (time > 0) {
+                time = time - 1
+                timer()
+            } else {
+                document.getElementById('timerDisplay').style.display = 'none';
+                disableMovement = true;
+                whistle.play();
+                time = 60;
+                stopMusic();
+            }
+        }
+        function stopTimer(){
+            clearTimeout(timerTO);
+            console.log('stopTimer!')
+            document.getElementById('timerDisplay').style.display = 'none';
+            time = 60;
+            clearTimeout(timerTO);
+            noTimer = true;
+        }
+
         animatePaula1();
         positionPaula();
     </script>
