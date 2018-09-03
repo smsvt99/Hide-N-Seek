@@ -125,13 +125,13 @@
         <div id="nameEntry">
             <form>
                 <span id="nameEntryText"></span>
+                <!-- <br/>
                 <br/>
+                <span id="namePlease"></span>
                 <br/>
-                <span>Please enter your name.</span>
-                <br/>
-                <br/>
-                <input type="text" id="name">
-                <input type="submit">
+                <br/> -->
+                <!-- <input type="text" id="name">
+                <input type="submit"> -->
             </form>
         </div>
         <div id="paula"></div>
@@ -196,7 +196,21 @@
         let noTimer = true;
         let gameOver = false;
 
+        typerIndex = 0;
 
+          function typer(string, id){
+                         let array = string.split(" ")
+            length = array.length
+             if (typerIndex <= length - 1) {
+				document.getElementById(id).innerHTML += array[typerIndex] + ' '
+				typerIndex++
+                setTimeout(function() {
+                    typer(string, id);
+                    }, 75)
+             } else {
+                 typerIndex = 0
+             }
+         }
 
         function walk(event) {
             document.getElementById('input').removeEventListener('keydown', walk);
@@ -430,23 +444,25 @@
                     boxStatus = 'open'
 
                     textBox = document.createElement('p');
+                    textBox.setAttribute("id","welcome")
+                    document.body.appendChild(textBox)
+                    typer("Velkommen til Grønland! <br><br> Let's play hide and seek! I will give you 1 point each time you find me. Hee hee! <br><br> Press 'SHIFT' to play.",'welcome')
+                    // var linebreak1 = document.createElement('br');
+                    // var linebreak2 = document.createElement('br');
+                    // var linebreak3 = document.createElement('br');
+                    // var linebreak4 = document.createElement('br');
 
-                    var linebreak1 = document.createElement('br');
-                    var linebreak2 = document.createElement('br');
-                    var linebreak3 = document.createElement('br');
-                    var linebreak4 = document.createElement('br');
-
-                    var text = document.createTextNode("Velkommen til Grønland!");
-                    textBox.appendChild(text);
-                    textBox.appendChild(linebreak1);
-                    textBox.appendChild(linebreak2);
-                    var text2 = document.createTextNode("Let's play hide and seek! I will give you 1 point each time you find me. Hee hee!");
-                    textBox.appendChild(text2);
-                    textBox.appendChild(linebreak3)
-                    textBox.appendChild(linebreak4)
-                    var text3 = document.createTextNode("Press 'SHIFT' to play.");
-                    textBox.appendChild(text3);
-                    document.body.appendChild(textBox);
+                    // var text = document.createTextNode("Velkommen til Grønland!");
+                    // textBox.appendChild(text);
+                    // textBox.appendChild(linebreak1);
+                    // textBox.appendChild(linebreak2);
+                    // var text2 = document.createTextNode("Let's play hide and seek! I will give you 1 point each time you find me. Hee hee!");
+                    // textBox.appendChild(text2);
+                    // textBox.appendChild(linebreak3)
+                    // textBox.appendChild(linebreak4)
+                    // var text3 = document.createTextNode("Press 'SHIFT' to play.");
+                    // textBox.appendChild(text3);
+                    // document.body.appendChild(textBox);
 
                 } else if (gameHasBegun === true) {
 
@@ -454,25 +470,30 @@
                     boxStatus = 'open';
                     // gameHasBegun = false;
                     stopMusic();
+                   
                     textBox = document.createElement('p');
-
-                    var linebreak1 = document.createElement('br');
-                    var linebreak2 = document.createElement('br');
-                    var linebreak3 = document.createElement('br');
-                    var linebreak4 = document.createElement('br');
-
-                    var text = document.createTextNode("Golly! You sure are good at Hide and Seek!");
-                    textBox.appendChild(text);
-                    textBox.appendChild(linebreak1);
-                    textBox.appendChild(linebreak2);
-                    var text2 = document.createTextNode(`Your score is now ${score}. Good job, hee hee!`);
-                    textBox.appendChild(text2);
-                    textBox.appendChild(linebreak3)
-                    textBox.appendChild(linebreak4)
-                    var text3 = document.createTextNode("Press 'SHIFT' to play again, or 'Q' to quit and post your score to the leaderboard.");
-                    textBox.appendChild(text3);
+                    textBox.setAttribute("id","foundMe");
                     document.body.appendChild(textBox);
+                    typer(`Golly! You sure are good at Hide and Seek! <br><br> Your score is now ${score}. Good job, hee hee! <br><br> Press 'SHIFT' to play again, or 'Q' to quit and post your score to the leaderboard.`, 'foundMe')
                     stopTimer();
+                    
+                    
+                    // var linebreak1 = document.createElement('br');
+                    // var linebreak2 = document.createElement('br');
+                    // var linebreak3 = document.createElement('br');
+                    // var linebreak4 = document.createElement('br');
+
+                    // var text = document.createTextNode("Golly! You sure are good at Hide and Seek!");
+                    // textBox.appendChild(text);
+                    // textBox.appendChild(linebreak1);
+                    // textBox.appendChild(linebreak2);
+                    // var text2 = document.createTextNode(`Your score is now ${score}. Good job, hee hee!`);
+                    // textBox.appendChild(text2);
+                    // textBox.appendChild(linebreak3)
+                    // textBox.appendChild(linebreak4)
+                    // var text3 = document.createTextNode("Press 'SHIFT' to play again, or 'Q' to quit and post your score to the leaderboard.");
+                    // textBox.appendChild(text3);
+                    // document.body.appendChild(textBox);
                 }
             }
         }
@@ -527,7 +548,11 @@
         function enterScore() {
             textBox.remove();
             document.getElementById('nameEntry').style.display = 'block';
-            document.getElementById('nameEntryText').textContent = `Your score was ${score}. Nice!`
+            typer(`Your score was ${score}. Nice! <br> <br> Please enter your name. <br> <br><br>`, 'nameEntryText')
+            setTimeout(function(){
+                document.getElementById('nameEntryText').innerHTML += '<input type="text"id="name"><input type="submit">'},1300)
+            // document.getElementById('nameEntryText').textContent = `Your score was ${score}. Nice!`
+            // typer('Please enter your name.', 'namePlease')
         }
         function timer() {
             if (!noTimer) {
