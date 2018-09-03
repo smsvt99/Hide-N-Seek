@@ -198,19 +198,19 @@
 
         typerIndex = 0;
 
-          function typer(string, id){
-                         let array = string.split(" ")
+        function typer(string, id) {
+            let array = string.split(" ")
             length = array.length
-             if (typerIndex <= length - 1) {
-				document.getElementById(id).innerHTML += array[typerIndex] + ' '
-				typerIndex++
-                setTimeout(function() {
+            if (typerIndex <= length - 1) {
+                document.getElementById(id).innerHTML += array[typerIndex] + ' '
+                typerIndex++
+                setTimeout(function () {
                     typer(string, id);
-                    }, 75)
-             } else {
-                 typerIndex = 0
-             }
-         }
+                }, 50)
+            } else {
+                typerIndex = 0
+            }
+        }
 
         function walk(event) {
             document.getElementById('input').removeEventListener('keydown', walk);
@@ -249,7 +249,7 @@
             }
 
         }
-        function stopWalking(event) {
+        function clearMovementTimeouts(){
             clearTimeout(rightTO);
             clearTimeout(right2TO);
             clearTimeout(leftTO);
@@ -263,6 +263,9 @@
             clearTimeout(xMinusTO);
             clearTimeout(yPlusTO);
             clearTimeout(xPlusTO);
+        }
+        function stopWalking(event) {
+           clearMovementTimeouts();
 
             left = false;
             up = false;
@@ -350,7 +353,7 @@
         }
 
         function decreaseX() {
-            if (!gameHasBegun){
+            if (!gameHasBegun) {
                 x = x - 1
                 if (left) {
                     xMinusTO = setTimeout(moveMapLeft, 10)
@@ -363,7 +366,7 @@
             }
         }
         function decreaseY() {
-            if (!gameHasBegun){
+            if (!gameHasBegun) {
                 y = y - 1
                 if (up) {
                     yMinusTO = setTimeout(moveMapUp, 10)
@@ -376,9 +379,9 @@
             }
         }
         function increaseY() {
-            if (!gameHasBegun){
-            y = y + 1
-            if (down) {
+            if (!gameHasBegun) {
+                y = y + 1
+                if (down) {
                     yPlusTO = setTimeout(moveMapDown, 10)
                 }
             } else {
@@ -389,8 +392,8 @@
             }
         }
         function increaseX() {
-            if (!gameHasBegun){
-                x = x + 1 
+            if (!gameHasBegun) {
+                x = x + 1
                 if (right) {
                     xPlusTO = setTimeout(moveMapRight, 10)
                 }
@@ -438,15 +441,15 @@
             document.getElementById('paula').style.top.slice(0, -2) > 320
             &&
             document.getElementById('paula').style.top.slice(0, -2) < 480
-            &&
-            boxStatus === 'closed') {
+                &&
+                boxStatus === 'closed') {
                 if (gameHasBegun === false) {
                     boxStatus = 'open'
 
                     textBox = document.createElement('p');
-                    textBox.setAttribute("id","welcome")
+                    textBox.setAttribute("id", "welcome")
                     document.body.appendChild(textBox)
-                    typer("Velkommen til Grønland! <br><br> Let's play hide and seek! I will give you 1 point each time you find me. Hee hee! <br><br> Press 'SHIFT' to play.",'welcome')
+                    typer("Velkommen til Grønland! <br><br> Let's play hide and seek! I will give you 1 point each time you find me. Hee hee! <br><br> Press 'SHIFT' to play.", 'welcome')
                     // var linebreak1 = document.createElement('br');
                     // var linebreak2 = document.createElement('br');
                     // var linebreak3 = document.createElement('br');
@@ -470,14 +473,14 @@
                     boxStatus = 'open';
                     // gameHasBegun = false;
                     stopMusic();
-                   
+
                     textBox = document.createElement('p');
-                    textBox.setAttribute("id","foundMe");
+                    textBox.setAttribute("id", "foundMe");
                     document.body.appendChild(textBox);
                     typer(`Golly! You sure are good at Hide and Seek! <br><br> Your score is now ${score}. Good job, hee hee! <br><br> Press 'SHIFT' to play again, or 'Q' to quit and post your score to the leaderboard.`, 'foundMe')
                     stopTimer();
-                    
-                    
+
+
                     // var linebreak1 = document.createElement('br');
                     // var linebreak2 = document.createElement('br');
                     // var linebreak3 = document.createElement('br');
@@ -549,40 +552,43 @@
             textBox.remove();
             document.getElementById('nameEntry').style.display = 'block';
             typer(`Your score was ${score}. Nice! <br> <br> Please enter your name. <br> <br><br>`, 'nameEntryText')
-            setTimeout(function(){
-                document.getElementById('nameEntryText').innerHTML += '<input type="text"id="name"><input type="submit">'},1300)
+            setTimeout(function () {
+                document.getElementById('nameEntryText').innerHTML += '<input type="text"id="name"><input type="submit">'
+            }, 1300)
             // document.getElementById('nameEntryText').textContent = `Your score was ${score}. Nice!`
             // typer('Please enter your name.', 'namePlease')
         }
         function timer() {
             if (!noTimer) {
-            var timerTO = setTimeout(updateTimer, 1000)
+                var timerTO = setTimeout(updateTimer, 1000)
             }
 
         }
         function updateTimer() {
             document.getElementById('timerDisplay').style.display = 'block';
-            if (time > 60){
+            if (time > 60) {
                 document.getElementById('timerDisplayText').textContent = '60';
-                time = time - 1
-                timer()
+                time = time - 1;
+                timer();
             } else {
                 document.getElementById('timerDisplayText').textContent = time;
-                if (time > 0) {
-                    time = time - 1
-                    timer()
-                } else if (time === 3) {
+                if (time === 1) {
                     whistle.play();
-                    stopMusic();
+                    timer();
+                    time = time - 1;
+                } else if (time > 0) {
+                    time = time - 1;
+                    timer();
                 } else {
                     document.getElementById('timerDisplay').style.display = 'none';
+                    clearMovementTimeouts();
                     disableMovement = true;
                     time = 60;
-                    timeIsUp()
+                    timeIsUp();
                 }
             }
         }
-        function stopTimer(){
+        function stopTimer() {
             clearTimeout(timerTO);
             console.log('stopTimer!')
             document.getElementById('timerDisplay').style.display = 'none';
@@ -590,48 +596,51 @@
             clearTimeout(timerTO);
             noTimer = true;
         }
-        function timeIsUp(){
-                    gameOver = true;
-                    boxStatus = 'open';
-                    // gameHasBegun = false;
-                    stopMusic();
-                    textBox = document.createElement('p');
+        function timeIsUp() {
+            gameOver = true;
+            boxStatus = 'open';
+            // gameHasBegun = false;
+            stopMusic();
+            textBox = document.createElement('p');
+            textBox.setAttribute('id', 'youLose')
+            document.body.appendChild(textBox);
 
-                    var linebreak1 = document.createElement('br');
-                    var linebreak2 = document.createElement('br');
-                    var linebreak3 = document.createElement('br');
-                    var linebreak4 = document.createElement('br');
+            // var linebreak1 = document.createElement('br');
+            // var linebreak2 = document.createElement('br');
+            // var linebreak3 = document.createElement('br');
+            // var linebreak4 = document.createElement('br');
 
-                    if (score > 0) {
-                    
-                    var text = document.createTextNode("Time is up! I'm a pretty good hider, right?");
-                    textBox.appendChild(text);
-                    textBox.appendChild(linebreak1);
-                    textBox.appendChild(linebreak2);
-                    var text2 = document.createTextNode(`Your score was ${score}. Good job, hee hee!`);
-                    textBox.appendChild(text2);
-                    textBox.appendChild(linebreak3)
-                    textBox.appendChild(linebreak4)
-                    var text3 = document.createTextNode("Press 'Q' to quit and post your score to the leaderboard.");
-                    textBox.appendChild(text3);
-                    document.body.appendChild(textBox);
-                    stopTimer();
-                    
-                    } else {
+            if (score > 0) {
+                typer(`Time is up! I'm a pretty good hider, right? <br> <br> Your score was ${score}. Good job, hee hee! <br> <br> Press 'Q' to quit and post your score to the leaderboard`, 'youLose')
 
-                    var text = document.createTextNode("Time is up! I'm a pretty good hider, right?");
-                    textBox.appendChild(text);
-                    textBox.appendChild(linebreak1);
-                    textBox.appendChild(linebreak2);
-                    var text2 = document.createTextNode(`Your score was ${score}. You couldn't even find me once? hee hee!`);
-                    textBox.appendChild(text2);
-                    textBox.appendChild(linebreak3)
-                    textBox.appendChild(linebreak4)
-                    var text3 = document.createTextNode("Game Over. Refresh the page to try again.");
-                    textBox.appendChild(text3);
-                    document.body.appendChild(textBox);
-                    stopTimer();
-                    }
+                // var text = document.createTextNode("Time is up! I'm a pretty good hider, right?");
+                // textBox.appendChild(text);
+                // textBox.appendChild(linebreak1);
+                // textBox.appendChild(linebreak2);
+                // var text2 = document.createTextNode(`Your score was ${score}. Good job, hee hee!`);
+                // textBox.appendChild(text2);
+                // textBox.appendChild(linebreak3)
+                // textBox.appendChild(linebreak4)
+                // var text3 = document.createTextNode("Press 'Q' to quit and post your score to the leaderboard.");
+                // textBox.appendChild(text3);
+
+                stopTimer();
+
+            } else {
+                typer(`Time is up! I'm a pretty good hider, right? <br> <br> Your score was ${score}. You couldn't even find me once? hee hee! <br> <br> Game Over. Refresh the page to try again.`, 'youLose')
+
+                // var text = document.createTextNode("Time is up! I'm a pretty good hider, right?");
+                // textBox.appendChild(text);
+                // textBox.appendChild(linebreak1);
+                // textBox.appendChild(linebreak2);
+                // var text2 = document.createTextNode(`Your score was ${score}. You couldn't even find me once? hee hee!`);
+                // textBox.appendChild(text2);
+                // textBox.appendChild(linebreak3)
+                // textBox.appendChild(linebreak4)
+                // var text3 = document.createTextNode("Game Over. Refresh the page to try again.");
+                // textBox.appendChild(text3);
+                stopTimer();
+            }
         }
 
         animatePaula1();
