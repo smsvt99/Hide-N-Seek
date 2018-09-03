@@ -188,7 +188,7 @@
         var whistle = new Audio('whistle.mp3');
 
         let disableMovement = false;
-        let time = 60;
+        let time = 61;
 
         let timerTO;
         let timer2TO;
@@ -231,6 +231,7 @@
                 endConvo();
             } if (event.keyCode === 81 && boxStatus === 'open' && score > 0) {
                 enterScore();
+                gameOver = true;
             }
 
         }
@@ -530,23 +531,30 @@
         }
         function timer() {
             if (!noTimer) {
-            document.getElementById('timerDisplay').style.display = 'block';
-            document.getElementById('timerDisplayText').textContent = time;
             var timerTO = setTimeout(updateTimer, 1000)
             }
 
         }
         function updateTimer() {
-            if (time > 0) {
+            document.getElementById('timerDisplay').style.display = 'block';
+            if (time > 60){
+                document.getElementById('timerDisplayText').textContent = '60';
                 time = time - 1
                 timer()
             } else {
-                document.getElementById('timerDisplay').style.display = 'none';
-                disableMovement = true;
-                whistle.play();
-                time = 60;
-                stopMusic();
-                timeIsUp()
+                document.getElementById('timerDisplayText').textContent = time;
+                if (time > 0) {
+                    time = time - 1
+                    timer()
+                } else if (time === 3) {
+                    whistle.play();
+                    stopMusic();
+                } else {
+                    document.getElementById('timerDisplay').style.display = 'none';
+                    disableMovement = true;
+                    time = 60;
+                    timeIsUp()
+                }
             }
         }
         function stopTimer(){
