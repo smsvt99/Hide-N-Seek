@@ -107,12 +107,21 @@
         }
 
         #timerDisplay h1 {
-            text-align: center;
+            text-align: center; 
             position: relative;
             left: 5%;
             top: 7%;
             padding: 0px;
             margin: 0px;
+        }
+        #tessie {
+            background: url('tessie.png') 0px 0px no-repeat;
+            z-index: 2;
+            height: 300px;
+            width: 200px;
+            position: absolute;
+            left: 1600px;
+            top: 400px;
         }
     </style>
 </head>
@@ -125,15 +134,9 @@
         <div id="nameEntry">
             <form>
                 <span id="nameEntryText"></span>
-                <!-- <br/>
-                <br/>
-                <span id="namePlease"></span>
-                <br/>
-                <br/> -->
-                <!-- <input type="text" id="name">
-                <input type="submit"> -->
             </form>
         </div>
+        <div id="tessie"></div>
         <div id="paula"></div>
         <div id="image"></div>
         <div id="timerDisplay">
@@ -141,7 +144,6 @@
         </div>
     </div>
     <script>
-        // TO DO: disable motion, visible timer, visible score, whistle sound, sound and animation for text
 
         document.getElementById('input').focus();
 
@@ -196,7 +198,8 @@
         let noTimer = true;
         let gameOver = false;
 
-        typerIndex = 0;
+        let typerIndex = 0;
+        let talkingToTessie = false;
 
         function typer(string, id) {
             let array = string.split(" ")
@@ -240,8 +243,9 @@
 
             } if (event.keyCode === 13) {
                 talkToPaula();
+                talkToTessie();
 
-            } if (event.keyCode === 16 && boxStatus === 'open' && !gameOver) {
+            } if (event.keyCode === 16 && boxStatus === 'open' && !gameOver && !talkingToTessie) {
                 endConvo();
             } if (event.keyCode === 81 && boxStatus === 'open' && score > 0) {
                 enterScore();
@@ -249,6 +253,15 @@
             }
 
         }
+        // function walkDiagonally (event){
+        //     document.getElementById('input').removeEventListener('keydown', walkDiagonally);
+        //     if (event.keyCode === 39 && !disableMovement) {
+        //         if (state === 'up') {
+        //             moveMapLeft();
+        //             (console.log("walk diagonally"))
+        //         }
+        //     }
+        // }
         function clearMovementTimeouts(){
             clearTimeout(rightTO);
             clearTimeout(right2TO);
@@ -265,14 +278,26 @@
             clearTimeout(xPlusTO);
         }
         function stopWalking(event) {
+            // console.log("here is the keycode for the keyup event: " + event.keyCode)
+           
            clearMovementTimeouts();
-
-            left = false;
-            up = false;
-            down = false;
-            right = false;
+            if (event.keyCode === 39){
+                left = false;
+            } else if (event.keyCode === 37){
+                right = false;
+            } else if (event.keyCode === 38){
+                down = false;
+            } else if (event.keycode === 40){
+                up = false;
+            }
+            // left = false;
+            // up = false;
+            // down = false;
+            // right = false;
 
             document.getElementById('input').addEventListener('keydown', walk);
+            // document.getElementById('input').addEventListener('keydown', walkDiagonally);
+
 
             if (state === 'up') {
                 document.getElementById('image').style.backgroundPosition = "-3px -67px";
@@ -406,6 +431,7 @@
         }
 
         document.getElementById('input').addEventListener('keydown', walk);
+        // document.getElementById('input').addEventListener('keydown', walkDiagonally);
         document.getElementById('input').addEventListener('keyup', stopWalking);
 
         //Paula
@@ -431,6 +457,42 @@
                 paulaTO = setTimeout(positionPaula, 5)
             }
         }
+        function positionTessie() {
+                document.getElementById('tessie').style.left = `${1600 + x}px`;
+                document.getElementById('tessie').style.top = `${400 + y}px`;
+                setTimeout(positionTessie, 5)
+        }
+        function animateTessie1() {
+            document.getElementById('tessie').style.backgroundPosition = "0px 0px";
+            setTimeout(animateTessie2, 540)
+
+        }
+        function animateTessie2() {
+            document.getElementById('tessie').style.backgroundPosition = "-227px 0px";
+            setTimeout(animateTessie1, 540)
+        }
+        function talkToTessie(){
+            if
+            (document.getElementById('tessie').style.left.slice(0, -2) > 450
+            &&
+            document.getElementById('tessie').style.left.slice(0, -2) < 750
+            &&
+            document.getElementById('tessie').style.top.slice(0, -2) > 160
+            &&
+            document.getElementById('tessie').style.top.slice(0, -2) < 300
+            &&
+            boxStatus === 'closed'){
+            
+                boxStatus = 'open'
+                talkingToTessie === true
+
+                textBox = document.createElement('p');
+                textBox.setAttribute("id", "tessieBox")
+                document.body.appendChild(textBox)
+                typer("sup, nerd.", 'tessieBox')
+            }
+            else {console.log('didnt work, but function fired')}
+        }
 
         function talkToPaula() {
             if
@@ -450,23 +512,7 @@
                     textBox.setAttribute("id", "welcome")
                     document.body.appendChild(textBox)
                     typer("Velkommen til Grønland! <br><br> Let's play hide and seek! I will give you 1 point each time you find me. Hee hee! <br><br> Press 'SHIFT' to play.", 'welcome')
-                    // var linebreak1 = document.createElement('br');
-                    // var linebreak2 = document.createElement('br');
-                    // var linebreak3 = document.createElement('br');
-                    // var linebreak4 = document.createElement('br');
-
-                    // var text = document.createTextNode("Velkommen til Grønland!");
-                    // textBox.appendChild(text);
-                    // textBox.appendChild(linebreak1);
-                    // textBox.appendChild(linebreak2);
-                    // var text2 = document.createTextNode("Let's play hide and seek! I will give you 1 point each time you find me. Hee hee!");
-                    // textBox.appendChild(text2);
-                    // textBox.appendChild(linebreak3)
-                    // textBox.appendChild(linebreak4)
-                    // var text3 = document.createTextNode("Press 'SHIFT' to play.");
-                    // textBox.appendChild(text3);
-                    // document.body.appendChild(textBox);
-
+                  
                 } else if (gameHasBegun === true) {
 
                     score = score + 1;
@@ -479,24 +525,6 @@
                     document.body.appendChild(textBox);
                     typer(`Golly! You sure are good at Hide and Seek! <br><br> Your score is now ${score}. Good job, hee hee! <br><br> Press 'SHIFT' to play again, or 'Q' to quit and post your score to the leaderboard.`, 'foundMe')
                     stopTimer();
-
-
-                    // var linebreak1 = document.createElement('br');
-                    // var linebreak2 = document.createElement('br');
-                    // var linebreak3 = document.createElement('br');
-                    // var linebreak4 = document.createElement('br');
-
-                    // var text = document.createTextNode("Golly! You sure are good at Hide and Seek!");
-                    // textBox.appendChild(text);
-                    // textBox.appendChild(linebreak1);
-                    // textBox.appendChild(linebreak2);
-                    // var text2 = document.createTextNode(`Your score is now ${score}. Good job, hee hee!`);
-                    // textBox.appendChild(text2);
-                    // textBox.appendChild(linebreak3)
-                    // textBox.appendChild(linebreak4)
-                    // var text3 = document.createTextNode("Press 'SHIFT' to play again, or 'Q' to quit and post your score to the leaderboard.");
-                    // textBox.appendChild(text3);
-                    // document.body.appendChild(textBox);
                 }
             }
         }
@@ -524,6 +552,7 @@
             }
         }
         function increaseI() {
+            clearTimeout(paulaTO);
             if (i < 1000) {
                 i = i + 10
                 paulaRunsAway();
@@ -547,6 +576,7 @@
             document.getElementById('paula').style.top = randomTop + 'px';
             document.getElementById('paula').style.left = randomLeft + 'px';
             positionPaula()
+            positionTessie()
         }
         function enterScore() {
             textBox.remove();
@@ -555,15 +585,14 @@
             setTimeout(function () {
                 document.getElementById('nameEntryText').innerHTML += '<input type="text"id="name"><input type="submit">'
             }, 1300)
-            // document.getElementById('nameEntryText').textContent = `Your score was ${score}. Nice!`
-            // typer('Please enter your name.', 'namePlease')
         }
+        
         function timer() {
             if (!noTimer) {
                 var timerTO = setTimeout(updateTimer, 1000)
             }
-
         }
+        
         function updateTimer() {
             document.getElementById('timerDisplay').style.display = 'block';
             if (time > 60) {
@@ -602,49 +631,23 @@
             // gameHasBegun = false;
             stopMusic();
             textBox = document.createElement('p');
-            textBox.setAttribute('id', 'youLose')
+            textBox.setAttribute('id', 'youLose');
             document.body.appendChild(textBox);
 
-            // var linebreak1 = document.createElement('br');
-            // var linebreak2 = document.createElement('br');
-            // var linebreak3 = document.createElement('br');
-            // var linebreak4 = document.createElement('br');
-
             if (score > 0) {
-                typer(`Time is up! I'm a pretty good hider, right? <br> <br> Your score was ${score}. Good job, hee hee! <br> <br> Press 'Q' to quit and post your score to the leaderboard`, 'youLose')
-
-                // var text = document.createTextNode("Time is up! I'm a pretty good hider, right?");
-                // textBox.appendChild(text);
-                // textBox.appendChild(linebreak1);
-                // textBox.appendChild(linebreak2);
-                // var text2 = document.createTextNode(`Your score was ${score}. Good job, hee hee!`);
-                // textBox.appendChild(text2);
-                // textBox.appendChild(linebreak3)
-                // textBox.appendChild(linebreak4)
-                // var text3 = document.createTextNode("Press 'Q' to quit and post your score to the leaderboard.");
-                // textBox.appendChild(text3);
-
+                typer(`Time is up! I'm a pretty good hider, right? <br> <br> Your score was ${score}. Good job, hee hee! <br> <br> Press 'Q' to quit and post your score to the leaderboard`, 'youLose');
                 stopTimer();
 
             } else {
-                typer(`Time is up! I'm a pretty good hider, right? <br> <br> Your score was ${score}. You couldn't even find me once? hee hee! <br> <br> Game Over. Refresh the page to try again.`, 'youLose')
-
-                // var text = document.createTextNode("Time is up! I'm a pretty good hider, right?");
-                // textBox.appendChild(text);
-                // textBox.appendChild(linebreak1);
-                // textBox.appendChild(linebreak2);
-                // var text2 = document.createTextNode(`Your score was ${score}. You couldn't even find me once? hee hee!`);
-                // textBox.appendChild(text2);
-                // textBox.appendChild(linebreak3)
-                // textBox.appendChild(linebreak4)
-                // var text3 = document.createTextNode("Game Over. Refresh the page to try again.");
-                // textBox.appendChild(text3);
+                typer(`Time is up! I'm a pretty good hider, right? <br> <br> Your score was ${score}. You couldn't even find me once? hee hee! <br> <br> Game Over. Refresh the page to try again.`, 'youLose');
                 stopTimer();
             }
         }
 
         animatePaula1();
         positionPaula();
+        positionTessie();
+        animateTessie1();
     </script>
 </body>
 

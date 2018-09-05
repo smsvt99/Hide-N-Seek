@@ -1,0 +1,23 @@
+{
+  "name": "nesswalk",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smsvt99/Ness-Walk.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smsvt99/Ness-Walk/issues"
+  },
+  "homepage": "https://github.com/smsvt99/Ness-Walk#readme",
+  "dependencies": {
+    "mime-types": "^2.1.20"
+  }
+}
