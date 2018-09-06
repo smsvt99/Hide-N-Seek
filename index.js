@@ -1,19 +1,35 @@
 var fs = require('fs');
 var http = require('http');
 var mime = require('mime-types');
+let cursor;
+let documents;
 
 var port = process.env.PORT || 5001;
 http.createServer(function (request, response) {
   let contentType = 'text/plain'
   let data;
   let path = request.url;
+//   console.log("here is the request.url: " + path)
+//   myUrl = require('url').parse(request.url)
+//   console.log('here is the url.pathname: ' + myUrl.pathname)
 
   if (path === '/') {
-    // if (request.method === "GET") {
     file = 'index.html';
+
+    MongoClient.connect(url, function(err, client) {
+        assert.equal(null, err);
+        console.log("Connected successfully to server");
+       
+        const db = client.db(dbName);
+       
+        getDocuments(db, function() {
+            console.log(documents)
+            client.close();
+        });
+      });
+
   }
   if (request.method === 'POST' && path === '/scores') {
-    // response.setHeader('Content-Type', 'application/x-www-form-urlencoded');
     file = 'index.html';
     console.log('did a post')
     let theBody = '';
@@ -23,9 +39,7 @@ http.createServer(function (request, response) {
         theNewestBody = theNewerBody.replace(/%2F/g, '/')
         theNewestestBody = theNewestBody.replace(/=/g,'":"')
         parsedBody = JSON.parse(theNewestestBody)
-        // .toString(); 
-        // convert Buffer to string
-
+   
         MongoClient.connect(url, function(err, client) {
             assert.equal(null, err);
             console.log("Connected successfully to server");
@@ -33,6 +47,7 @@ http.createServer(function (request, response) {
             const db = client.db(dbName);
            
             insertDocuments(db, function() {
+                console.log(documents.toArray)
               client.close();
             });
           });
@@ -43,17 +58,6 @@ http.createServer(function (request, response) {
         response.end('ok');
     });
 }
-
-    // MongoClient.connect(url, function(err, client) {
-    //     assert.equal(null, err);
-    //     console.log("Connected successfully to server");
-       
-    //     const db = client.db(dbName);
-       
-    //     insertDocuments(db, function() {
-    //       client.close();
-    //     });
-    //   });;
   
   else if (path.indexOf('.') === -1) {
     file = 'index.html';
@@ -100,6 +104,16 @@ const insertDocuments = function(db, callback) {
     });
   }
 
+function getDocuments(db, callback) {
+    cursor = db.collection("scoreboard").find({}).toArray((error, documents) =>{
+        if (error){
+            console.log(error)
+        }
+        console.log(documents)
+        callback(documents)
+    })
+}
+
   const MongoClient = require('mongodb').MongoClient;
   const assert = require('assert');
    
@@ -108,17 +122,3 @@ const insertDocuments = function(db, callback) {
    
   // Database Name
   const dbName = 'hidenseek';
-   
-  // Use connect method to connect to the server
-
-//   MongoClient.connect(url, function(err, client) {
-//     assert.equal(null, err);
-//     console.log("Connected successfully to server");
-   
-//     const db = client.db(dbName);
-   
-//     insertDocuments(db, function() {
-//       client.close();
-//     });
-//   });
-    
