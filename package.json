@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/smsvt99/Ness-Walk#readme",
   "dependencies": {
-    "mime-types": "^2.1.20"
+    "mime-types": "^2.1.20",
+    "mongodb": "^3.1.4"
   }
 }

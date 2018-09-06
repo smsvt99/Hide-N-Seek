@@ -107,13 +107,14 @@
         }
 
         #timerDisplay h1 {
-            text-align: center; 
+            text-align: center;
             position: relative;
             left: 5%;
             top: 7%;
             padding: 0px;
             margin: 0px;
         }
+
         #tessie {
             background: url('tessie.png') 0px 0px no-repeat;
             z-index: 2;
@@ -122,6 +123,12 @@
             position: absolute;
             left: 1600px;
             top: 400px;
+        }
+        #invisibleScore{
+            display: none;
+        }
+        #invisibleDate{
+            display: none;
         }
     </style>
 </head>
@@ -132,8 +139,10 @@
     <div id="demo">
         <input type="text" id="input">
         <div id="nameEntry">
-            <form>
+            <form method="POST" action="/scores">
                 <span id="nameEntryText"></span>
+                <input  type="number" id="invisibleScore" name="playerScore">
+                <input type ="text" id="invisibleDate" name="playerDate">
             </form>
         </div>
         <div id="tessie"></div>
@@ -144,7 +153,6 @@
         </div>
     </div>
     <script>
-
         document.getElementById('input').focus();
 
         //movement of map, not character.
@@ -262,7 +270,7 @@
         //         }
         //     }
         // }
-        function clearMovementTimeouts(){
+        function clearMovementTimeouts() {
             clearTimeout(rightTO);
             clearTimeout(right2TO);
             clearTimeout(leftTO);
@@ -279,15 +287,15 @@
         }
         function stopWalking(event) {
             // console.log("here is the keycode for the keyup event: " + event.keyCode)
-           
-           clearMovementTimeouts();
-            if (event.keyCode === 39){
+
+            clearMovementTimeouts();
+            if (event.keyCode === 39) {
                 left = false;
-            } else if (event.keyCode === 37){
+            } else if (event.keyCode === 37) {
                 right = false;
-            } else if (event.keyCode === 38){
+            } else if (event.keyCode === 38) {
                 down = false;
-            } else if (event.keycode === 40){
+            } else if (event.keycode === 40) {
                 up = false;
             }
             // left = false;
@@ -458,9 +466,9 @@
             }
         }
         function positionTessie() {
-                document.getElementById('tessie').style.left = `${1600 + x}px`;
-                document.getElementById('tessie').style.top = `${400 + y}px`;
-                setTimeout(positionTessie, 5)
+            document.getElementById('tessie').style.left = `${1600 + x}px`;
+            document.getElementById('tessie').style.top = `${400 + y}px`;
+            setTimeout(positionTessie, 5)
         }
         function animateTessie1() {
             document.getElementById('tessie').style.backgroundPosition = "0px 0px";
@@ -471,7 +479,7 @@
             document.getElementById('tessie').style.backgroundPosition = "-227px 0px";
             setTimeout(animateTessie1, 540)
         }
-        function talkToTessie(){
+        function talkToTessie() {
             if
             (document.getElementById('tessie').style.left.slice(0, -2) > 450
             &&
@@ -480,9 +488,9 @@
             document.getElementById('tessie').style.top.slice(0, -2) > 160
             &&
             document.getElementById('tessie').style.top.slice(0, -2) < 300
-            &&
-            boxStatus === 'closed'){
-            
+                &&
+                boxStatus === 'closed') {
+
                 boxStatus = 'open'
                 talkingToTessie === true
 
@@ -491,7 +499,7 @@
                 document.body.appendChild(textBox)
                 typer("sup, nerd.", 'tessieBox')
             }
-            else {console.log('didnt work, but function fired')}
+            else { console.log('didnt work, but function fired') }
         }
 
         function talkToPaula() {
@@ -512,7 +520,7 @@
                     textBox.setAttribute("id", "welcome")
                     document.body.appendChild(textBox)
                     typer("Velkommen til Grønland! <br><br> Let's play hide and seek! I will give you 1 point each time you find me. Hee hee! <br><br> Press 'SHIFT' to play.", 'welcome')
-                  
+
                 } else if (gameHasBegun === true) {
 
                     score = score + 1;
@@ -545,9 +553,11 @@
         function paulaRunsAway() {
             if (!randomTop) {
                 document.getElementById('paula').style.top = `${500 + y + i}px`;
+                //ADD LEFT TO THIS
                 setTimeout(increaseI, 20);
             } else {
                 document.getElementById('paula').style.top = `${randomTop + y + i}px`;
+                //ADD LEFT TO THIS
                 setTimeout(increaseI, 20);
             }
         }
@@ -579,20 +589,22 @@
             positionTessie()
         }
         function enterScore() {
+            insertScore();
+            insertDate();
             textBox.remove();
             document.getElementById('nameEntry').style.display = 'block';
             typer(`Your score was ${score}. Nice! <br> <br> Please enter your name. <br> <br><br>`, 'nameEntryText')
             setTimeout(function () {
-                document.getElementById('nameEntryText').innerHTML += '<input type="text"id="name"><input type="submit">'
-            }, 1300)
+                document.getElementById('nameEntryText').innerHTML += '<input type="text" id="playerName" name="playerName"><input type="submit">'
+            }, 1000)
         }
-        
+
         function timer() {
             if (!noTimer) {
                 var timerTO = setTimeout(updateTimer, 1000)
             }
         }
-        
+
         function updateTimer() {
             document.getElementById('timerDisplay').style.display = 'block';
             if (time > 60) {
@@ -642,6 +654,14 @@
                 typer(`Time is up! I'm a pretty good hider, right? <br> <br> Your score was ${score}. You couldn't even find me once? hee hee! <br> <br> Game Over. Refresh the page to try again.`, 'youLose');
                 stopTimer();
             }
+        }
+        function insertScore(){
+            document.getElementById('invisibleScore').value = score
+        }
+        function insertDate(){
+            let date = new Date;
+            let formattedDate = date.toLocaleDateString('en-US')
+            document.getElementById('invisibleDate').value = formattedDate
         }
 
         animatePaula1();
