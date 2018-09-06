@@ -4,7 +4,7 @@ var mime = require('mime-types');
 
 var port = process.env.PORT || 5001;
 http.createServer(function (request, response) {
-  let contentType = 'text/plain';
+  let contentType = 'text/plain'
   let data;
   let path = request.url;
 
@@ -13,11 +13,11 @@ http.createServer(function (request, response) {
     file = 'index.html';
   }
   if (request.method === 'POST' && path === '/scores') {
-    response.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+    // response.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+    file = 'index.html';
     console.log('did a post')
     let theBody = '';
     request.on('data', chunk => {
-    
         theBody += '{"' + chunk + '"}'
         theNewerBody = theBody.replace(/&/g, '","')
         theNewestBody = theNewerBody.replace(/%2F/g, '/')
@@ -39,7 +39,7 @@ http.createServer(function (request, response) {
     });
     request.on('end', () => {
         console.log(parsedBody);
-        console.log(response.headers)
+        console.log('headers: ' + response.headers)
         response.end('ok');
     });
 }
@@ -85,8 +85,6 @@ http.createServer(function (request, response) {
 console.log("Listening on port " + port);
 
 //MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO
-
-let testObject = {name: "snoopy", score: "5", message: "bow wow"}
 
 const insertDocuments = function(db, callback) {
     // Get the documents collection
