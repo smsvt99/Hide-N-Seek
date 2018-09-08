@@ -145,6 +145,9 @@
                 <input type ="text" id="invisibleDate" name="playerDate">
             </form>
         </div>
+        <form method="GET" action="/scoreboard">
+            <input type="submit" id="scoreboardButton" value="Print Scores to Console (doesn't work)">
+        </form>
         <div id="tessie"></div>
         <div id="paula"></div>
         <div id="image"></div>
@@ -154,7 +157,6 @@
     </div>
     <script>
         document.getElementById('input').focus();
-
         //movement of map, not character.
         let left;
         let right;
@@ -208,6 +210,12 @@
 
         let typerIndex = 0;
         let talkingToTessie = false;
+
+        let documents;
+
+        document.getElementById('scoreboardButton').addEventListener('click', function(event) {
+            event.preventDefault()
+        });
 
         function typer(string, id) {
             let array = string.split(" ")
@@ -663,6 +671,7 @@
             let formattedDate = date.toLocaleDateString('en-US')
             document.getElementById('invisibleDate').value = formattedDate
         }
+   
 
         animatePaula1();
         positionPaula();

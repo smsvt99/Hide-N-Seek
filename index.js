@@ -2,9 +2,11 @@ var fs = require('fs');
 var http = require('http');
 var mime = require('mime-types');
 let cursor;
-let documents;
+// let documents;
+let globalDocuments;
 
 var port = process.env.PORT || 5001;
+
 http.createServer(function (request, response) {
   let contentType = 'text/plain'
   let data;
@@ -12,18 +14,34 @@ http.createServer(function (request, response) {
 //   console.log("here is the request.url: " + path)
 //   myUrl = require('url').parse(request.url)
 //   console.log('here is the url.pathname: ' + myUrl.pathname)
-
+    
+if (request.method === 'GET' && path === '/scoreboard') {
+        console.log("I did a GET")
+            MongoClient.connect(url, function(err, client) {
+            assert.equal(null, err);
+            console.log("Connected successfully to server");
+           
+            const db = client.db(dbName);
+           
+            getDocuments(db, function(documents) {
+                console.log('Log from line 27: ' + JSON.stringify(documents))
+    
+                client.close();
+            });
+          });
+    }
   if (path === '/') {
     file = 'index.html';
-
     MongoClient.connect(url, function(err, client) {
         assert.equal(null, err);
         console.log("Connected successfully to server");
        
         const db = client.db(dbName);
        
-        getDocuments(db, function() {
+        getDocuments(db, function(documents) {
+            console.log('Log from line 43: ')
             console.log(documents)
+
             client.close();
         });
       });
@@ -47,14 +65,12 @@ http.createServer(function (request, response) {
             const db = client.db(dbName);
            
             insertDocuments(db, function() {
-                console.log(documents.toArray)
               client.close();
             });
           });
     });
     request.on('end', () => {
         console.log(parsedBody);
-        console.log('headers: ' + response.headers)
         response.end('ok');
     });
 }
@@ -88,7 +104,7 @@ http.createServer(function (request, response) {
 
 console.log("Listening on port " + port);
 
-//MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO
+//MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO
 
 const insertDocuments = function(db, callback) {
     // Get the documents collection
@@ -109,7 +125,9 @@ function getDocuments(db, callback) {
         if (error){
             console.log(error)
         }
+        console.log("log from line 128: ")
         console.log(documents)
+        //Response is not defined here.
         callback(documents)
     })
 }
@@ -122,3 +140,5 @@ function getDocuments(db, callback) {
    
   // Database Name
   const dbName = 'hidenseek';
+  
+
