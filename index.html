@@ -130,10 +130,34 @@
         #invisibleDate{
             display: none;
         }
+        table{
+            font-family: 'orange_kid';
+            background-color: black;
+            color: beige;
+            font-size: 35px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 50px;
+            padding-right: 50px;
+            text-align: center;
+            opacity: .8;
+            height: 100%;
+            width: 33%;
+        }
+        table,
+        td {
+            border: 3px solid beige;
+        }
+        thead{
+            background-color: #333;
+            color: #fff;
+        }
+
+
     </style>
 </head>
 
-<body id="body">
+<body id="body" onload="fetchScores()">
     <img id="map" src="https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg">
 
     <div id="demo">
@@ -145,15 +169,74 @@
                 <input type ="text" id="invisibleDate" name="playerDate">
             </form>
         </div>
-        <form method="GET" action="/scoreboard">
+        <!-- <form method="GET" action="/scoreboard">
             <input type="submit" id="scoreboardButton" value="Print Scores to Console (doesn't work)">
-        </form>
+        </form> -->
         <div id="tessie"></div>
         <div id="paula"></div>
         <div id="image"></div>
         <div id="timerDisplay">
             <h1 id="timerDisplayText"></h1>
         </div>
+        <table id="table">
+                <thead>
+                    <tr>
+                        <th colspan="3">HIGH SCORES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1st</td>
+                    <td id="firstName"></td>
+                    <td id="firstScore"></td>
+                  </tr>
+                  <tr>
+                     <td>2nd</td>
+                     <td id="secondName"></td>
+                     <td id="secondScore"></td>
+                    </tr>
+                      <tr>
+                       <td>3rd</td>
+                        <td id="thirdName"></td>
+                        <td id="thirdScore"></td>
+                    </tr>
+                    <tr>
+                        <td>4th</td>
+                      <td id="fourthName"></td>
+                      <td id="fourthScore"></td>
+                    </tr>
+                      <tr>
+                        <td>5th</td>
+                        <td id="fifthName"></td>
+                        <td id="fifthScore"></td>
+                    </tr>
+                    <tr>
+                      <td>6th</td>
+                      <td id="sixthName"></td>
+                      <td id="sixthScore"></td>
+                    </tr>
+                      <tr>
+                        <td>7th</td>
+                        <td id="seventhName"></td>
+                        <td id="seventhScore"></td>
+                    </tr>
+                    <tr>
+                      <td>8th</td>
+                      <td id="eighthName"></td>
+                      <td id="eighthScore"></td>
+                    </tr>
+                      <tr>
+                        <td>9th</td>
+                        <td id="ninthName"></td>
+                        <td id="ninthScore"></td>
+                    </tr>
+                    <tr>
+                      <td>10th</td>
+                      <td id="tenthName"></td>
+                      <td id="tenthScore"></td>
+                    </tr>
+                </tbody>
+            </table>
     </div>
     <script>
         document.getElementById('input').focus();
@@ -213,9 +296,9 @@
 
         let documents;
 
-        document.getElementById('scoreboardButton').addEventListener('click', function(event) {
-            event.preventDefault()
-        });
+        // document.getElementById('scoreboardButton').addEventListener('click', function(event) {
+        //     event.preventDefault()
+        // });
 
         function typer(string, id) {
             let array = string.split(" ")
@@ -511,6 +594,7 @@
         }
 
         function talkToPaula() {
+            document.getElementById('table').style.display = 'none';
             if
             (document.getElementById('paula').style.left.slice(0, -2) > 600
             &&
@@ -670,6 +754,50 @@
             let date = new Date;
             let formattedDate = date.toLocaleDateString('en-US')
             document.getElementById('invisibleDate').value = formattedDate
+        }
+        function fetchScores(){
+            console.log('fetchScores was called')
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                // Typical action to be performed when the document is ready:
+                    
+                    console.log(JSON.parse(xhttp.responseText)[0].playerName)
+                    
+                    document.getElementById("firstName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[0].playerName)
+                    document.getElementById("firstScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore)
+                    
+                    document.getElementById("secondName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[1].playerName)
+                    document.getElementById("secondScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[1].playerScore)
+                
+                    document.getElementById("thirdName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[2].playerName)
+                    document.getElementById("thirdScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[2].playerScore)
+                
+                    document.getElementById("fourthName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[3].playerName)
+                    document.getElementById("fourthScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[3].playerScore)
+                
+                    document.getElementById("fifthName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[4].playerName)
+                    document.getElementById("fifthScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[4].playerScore)
+                
+                    document.getElementById("sixthName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[5].playerName)
+                    document.getElementById("sixthScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[5].playerScore)
+                
+                    document.getElementById("seventhName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[6].playerName)
+                    document.getElementById("seventhScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[6].playerScore)
+                
+                    document.getElementById("eighthName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[7].playerName)
+                    document.getElementById("eighthScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[7].playerScore)
+                
+                    document.getElementById("ninthName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[8].playerName)
+                    document.getElementById("ninthScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[8].playerScore)
+                
+                    document.getElementById("tenthName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[9].playerName)
+                    document.getElementById("tenthScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[9].playerScore)
+                
+                }
+            };
+            xhttp.open("GET", "scores.json", true);
+            xhttp.send();
         }
    
 
