@@ -31,12 +31,6 @@
             z-index: -2;
         }
 
-        /* #body{
-            height: 100%;
-            width: 100%;
-            background: url('https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg') 0px 0px no-repeat;
-        } */
-
         #map {
             position: absolute;
             z-index: -1;
@@ -124,123 +118,55 @@
             left: 1600px;
             top: 400px;
         }
-        #invisibleScore{
+
+        #invisibleScore {
             display: none;
         }
-        #invisibleDate{
+
+        #invisibleDate {
             display: none;
         }
-        /* table{
-            font-family: 'orange_kid';
-            background-color: black;
+        #instructions{
+            background-color: rgba(0,0,0,.8);
+            z-index: 100;
             color: beige;
-            font-size: 35px;
-            padding-top: 10px;
-            padding-bottom: 10px;
-            padding-left: 50px;
-            padding-right: 50px;
+            height: 50%;
+            width: 75%;
             text-align: center;
-            opacity: .8;
-            height: 100%;
-            width: 33%;
-        }
-        table,
-        td {
             border: 3px solid beige;
+            border-radius: 5px;
+            position: absolute;
+            left: 13%;
+            top: 25%;
+            padding-top: 3%;
+            font-size: 50px;
+            font-family: 'orange_kid';
         }
-        thead{
-            background-color: #333;
-            color: #fff;
-        } */
-
-
     </style>
 </head>
 
-<body id="body" onload="fetchScores()">
+<body id="body" onload="timeout()">
     <img id="map" src="https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg">
 
     <div id="demo">
-        <!-- <input type="text" id="input"> -->
         <div id="nameEntry">
             <form method="POST" action="/scores">
                 <span id="nameEntryText"></span>
-                <input  type="number" id="invisibleScore" name="playerScore">
-                <input type ="text" id="invisibleDate" name="playerDate">
+                <input type="number" id="invisibleScore" name="playerScore">
+                <input type="text" id="invisibleDate" name="playerDate">
             </form>
         </div>
-        <!-- <form method="GET" action="/scoreboard">
-            <input type="submit" id="scoreboardButton" value="Print Scores to Console (doesn't work)">
-        </form> -->
+
         <div id="tessie"></div>
         <div id="paula"></div>
         <div id="image"></div>
         <div id="timerDisplay">
-            <h1 id="timerDisplayText"></h1>
+        <h1 id="timerDisplayText"></h1>
         </div>
-        <!-- <table id="table">
-                <thead>
-                    <tr>
-                        <th colspan="3">HIGH SCORES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1st</td>
-                    <td id="firstName"></td>
-                    <td id="firstScore"></td>
-                  </tr>
-                  <tr>
-                     <td>2nd</td>
-                     <td id="secondName"></td>
-                     <td id="secondScore"></td>
-                    </tr>
-                      <tr>
-                       <td>3rd</td>
-                        <td id="thirdName"></td>
-                        <td id="thirdScore"></td>
-                    </tr>
-                    <tr>
-                        <td>4th</td>
-                      <td id="fourthName"></td>
-                      <td id="fourthScore"></td>
-                    </tr>
-                      <tr>
-                        <td>5th</td>
-                        <td id="fifthName"></td>
-                        <td id="fifthScore"></td>
-                    </tr>
-                    <tr>
-                      <td>6th</td>
-                      <td id="sixthName"></td>
-                      <td id="sixthScore"></td>
-                    </tr>
-                      <tr>
-                        <td>7th</td>
-                        <td id="seventhName"></td>
-                        <td id="seventhScore"></td>
-                    </tr>
-                    <tr>
-                      <td>8th</td>
-                      <td id="eighthName"></td>
-                      <td id="eighthScore"></td>
-                    </tr>
-                      <tr>
-                        <td>9th</td>
-                        <td id="ninthName"></td>
-                        <td id="ninthScore"></td>
-                    </tr>
-                    <tr>
-                      <td>10th</td>
-                      <td id="tenthName"></td>
-                      <td id="tenthScore"></td>
-                    </tr>
-                </tbody>
-            </table> -->
     </div>
-    <!-- <script src="index.js"></script> -->
+    <div id="instructions"> Welcome to Hide-n-Seek!<br><br>Move with the ARROW KEYS, talk to friends with ENTER<br><br>(hit ENTER to close this message)</div>
     <script>
-        // document.getElementById('input').focus();
+   
         //movement of map, not character.
         let left;
         let right;
@@ -296,13 +222,11 @@
         let talkingToTessie = false;
 
         let documents;
-        
+
         let tessieMessage;
         let response;
 
-        // document.getElementById('scoreboardButton').addEventListener('click', function(event) {
-        //     event.preventDefault()
-        // });
+        let highScore;
 
         function typer(string, id) {
             let array = string.split(" ")
@@ -319,7 +243,6 @@
         }
 
         function walk(event) {
-            // document.getElementById('input')
             window.removeEventListener('keydown', walk);
             // console.log(event.keyCode)
             if (event.keyCode === 39 && !disableMovement) {
@@ -346,9 +269,11 @@
                 state = 'down';
 
             } if (event.keyCode === 13) {
+                document.getElementById('instructions').style.display = 'none'
                 talkToPaula();
                 talkToTessie();
-
+            } if (event.keyCode === 81 && boxStatus === 'open') {
+                stopTalkingToTessie();
             } if (event.keyCode === 16 && boxStatus === 'open' && !gameOver && !talkingToTessie) {
                 endConvo();
             } if (event.keyCode === 81 && boxStatus === 'open' && score > 0) {
@@ -357,15 +282,7 @@
             }
 
         }
-        // function walkDiagonally (event){
-        //     document.getElementById('input').removeEventListener('keydown', walkDiagonally);
-        //     if (event.keyCode === 39 && !disableMovement) {
-        //         if (state === 'up') {
-        //             moveMapLeft();
-        //             (console.log("walk diagonally"))
-        //         }
-        //     }
-        // }
+
         function clearMovementTimeouts() {
             clearTimeout(rightTO);
             clearTimeout(right2TO);
@@ -382,7 +299,6 @@
             clearTimeout(xPlusTO);
         }
         function stopWalking(event) {
-            // console.log("here is the keycode for the keyup event: " + event.keyCode)
 
             clearMovementTimeouts();
             if (event.keyCode === 39) {
@@ -394,14 +310,9 @@
             } else if (event.keycode === 40) {
                 up = false;
             }
-            // left = false;
-            // up = false;
-            // down = false;
-            // right = false;
 
-            // document.getElementById('input')
+
             window.addEventListener('keydown', walk);
-            // document.getElementById('input').addEventListener('keydown', walkDiagonally);
 
 
             if (state === 'up') {
@@ -535,10 +446,8 @@
             }
         }
 
-        // document.getElementById('input')
         window.addEventListener('keydown', walk);
-        // document.getElementById('input').addEventListener('keydown', walkDiagonally);
-        // document.getElementById('input')
+
         window.addEventListener('keyup', stopWalking);
 
         //Paula
@@ -587,23 +496,31 @@
             document.getElementById('tessie').style.top.slice(0, -2) > 160
             &&
             document.getElementById('tessie').style.top.slice(0, -2) < 300
-                &&
-                boxStatus === 'closed') {
-
+            &&
+            boxStatus === 'closed') {
+    
+                console.log('talkToTessie')
                 boxStatus = 'open'
-                talkingToTessie === true
+                talkingToTessie = true
 
                 textBox = document.createElement('p');
                 textBox.setAttribute("id", "tessieBox")
                 document.body.appendChild(textBox)
-                typer(`hi ${tessieMessage}`, 'tessieBox')
+                typer(`Hi, ${tessieMessage}`, 'tessieBox')
             }
-
+        }
+        function stopTalkingToTessie(){
+            console.log('stopTalkingToTessie')
+            if (talkingToTessie){
+            textBox.remove()
+            talkingToTessie = false;
+            disableMovement = false;
+            boxStatus = 'closed'
+            }
         }
 
         function talkToPaula() {
-            disableMovement = true;
-            // document.getElementById('table').style.display = 'none';
+            console.log('talkToPaula')
             if
             (document.getElementById('paula').style.left.slice(0, -2) > 600
             &&
@@ -614,6 +531,7 @@
             document.getElementById('paula').style.top.slice(0, -2) < 480
                 &&
                 boxStatus === 'closed') {
+                    disableMovement = true;
                 if (gameHasBegun === false) {
                     boxStatus = 'open'
 
@@ -626,7 +544,6 @@
 
                     score = score + 1;
                     boxStatus = 'open';
-                    // gameHasBegun = false;
                     stopMusic();
 
                     textBox = document.createElement('p');
@@ -695,10 +612,18 @@
             insertDate();
             textBox.remove();
             document.getElementById('nameEntry').style.display = 'block';
-            typer(`Your score was ${score}. Nice! <br> <br> Please enter your name. <br> <br><br>`, 'nameEntryText')
-            setTimeout(function () {
-                document.getElementById('nameEntryText').innerHTML += '<input type="text" id="playerName" name="playerName"><input type="submit">'
-            }, 1000)
+            if (score < highScore){
+                typer(`Your score was ${score}. Nice! <br> <br> Please enter your name. <br> <br><br>`, 'nameEntryText')
+                setTimeout(function () {
+                    document.getElementById('nameEntryText').innerHTML += '<input type="text" id="playerName" name="playerName"><input type="submit">'
+                }, 1000)
+            } else {
+                document.getElementById('nameEntry').style.height = '50%'
+                typer(`Your score was ${score}. Wow! That looks like the High Score! <br> <br> Please enter your name and message for the other players. <br><br>`, 'nameEntryText')
+                setTimeout(function () {
+                    document.getElementById('nameEntryText').innerHTML += 'Name: <input type="text" id="playerName" name="playerName" value="name"><br>Message:<input type="text" name="message" value="message"><br><input type="submit">'
+                }, 1250)
+            }
         }
 
         function timer() {
@@ -742,7 +667,6 @@
         function timeIsUp() {
             gameOver = true;
             boxStatus = 'open';
-            // gameHasBegun = false;
             stopMusic();
             textBox = document.createElement('p');
             textBox.setAttribute('id', 'youLose');
@@ -757,41 +681,36 @@
                 stopTimer();
             }
         }
-        function insertScore(){
+        function insertScore() {
             document.getElementById('invisibleScore').value = score
         }
-        function insertDate(){
+        function insertDate() {
             let date = new Date;
             let formattedDate = date.toLocaleDateString('en-US')
             document.getElementById('invisibleDate').value = formattedDate
         }
-        function fetchScores(){
+
+         function timeout() {
+            setTimeout("fetchScores()", 4000)
+        }
+
+        function fetchScores() {
             console.log('fetchScores was called')
             var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                console.log(this.readyState)
-                console.log(this.status)
+            xhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                // Typical action to be performed when the document is ready:
-                      console.log("in the pertinant if")
-            //   I'm " + JSON.stringify(JSON.parse(xhttp.responseText)[0].playerName) + ". Think you can beat my high score of " + JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore).replace(/"/g,"") + "? " + JSON.stringify(JSON.parse(xhttp.responseText)[0].message).replace(/"/g,"")
-                    // console.log('at the if')
-                    // response = JSON.parse(xhttp.responseText[0]);
-
-            }; 
+                    console.log('in the magic if')
+                    // Typical action to be performed when the document is ready:
+                    tessieMessage = "I'm " + decodeURIComponent(JSON.stringify(JSON.parse(xhttp.responseText)[0].playerName).replace(/"/g,"").replace(/\+/, ' ').toUpperCase())
+        + ".<br><br> Think you can beat my HIGH SCORE of " + JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore).replace(/"/g,"") + "? <br><br>" 
+        + decodeURIComponent(JSON.stringify(JSON.parse(xhttp.responseText)[0].message).replace(/"/g,"").replace(/\+/g," ")) + "<br>(press 'Q' to exit)";
+        highScore = JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore).replace(/"/g,"")
+              
+                }
+            };
             xhttp.open("GET", "scores.json", true);
             xhttp.send();
-            console.log('response: ' + xhttp.responseText)
         }
-        // setTimeout(function(){
-        //     console.log(typeof response)
-        // },4000)
-        // setTimeout(function(){
-        // tessieMessage = "I'm " + JSON.stringify(JSON.parse(xhttp.responseText)[0].playerName)
-        //  + ". Think you can beat my high score of " + JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore).replace(/"/g,"") + "? " + JSON.stringify(JSON.parse(xhttp.responseText)[0].message).replace(/"/g,"")
-        // }, 3000)
-    }
-
 
         animatePaula1();
         positionPaula();
