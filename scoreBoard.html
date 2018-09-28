@@ -1,0 +1,149 @@
+<html>
+<head>
+    <style>
+        body{
+            background-color: black;
+            letter-spacing: 5px;
+        }
+          @font-face {
+            font-family: 'orange_kid';
+            src: url(orange_kid.ttf) format('truetype'),
+            url(orange_kid.woff) format('woff')
+        }
+        table{
+            font-family: 'orange_kid';
+            background-color: black;
+            color: beige;
+            font-size: 35px;
+            padding-top: 2%;
+            padding-bottom: 2%;
+            padding-left: 5%;
+            padding-right: 5%;
+            text-align: center;
+            height: 100%;
+            width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+        table,
+        td {
+            border: 3px solid beige;
+        }
+        thead{
+            background-color: #333;
+            color: #fff;
+            font-size: 100px;
+            letter-spacing: 20px;
+        }
+    </style>
+</head>
+<body onload="fetchScores()">
+        <table id="table">
+                <thead>
+                    <tr>
+                        <th colspan="3">HIGH SCORES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1st</td>
+                    <td id="firstName"></td>
+                    <td id="firstScore"></td>
+                  </tr>
+                  <tr>
+                     <td>2nd</td>
+                     <td id="secondName"></td>
+                     <td id="secondScore"></td>
+                    </tr>
+                      <tr>
+                       <td>3rd</td>
+                        <td id="thirdName"></td>
+                        <td id="thirdScore"></td>
+                    </tr>
+                    <tr>
+                        <td>4th</td>
+                      <td id="fourthName"></td>
+                      <td id="fourthScore"></td>
+                    </tr>
+                      <tr>
+                        <td>5th</td>
+                        <td id="fifthName"></td>
+                        <td id="fifthScore"></td>
+                    </tr>
+                    <tr>
+                      <td>6th</td>
+                      <td id="sixthName"></td>
+                      <td id="sixthScore"></td>
+                    </tr>
+                      <tr>
+                        <td>7th</td>
+                        <td id="seventhName"></td>
+                        <td id="seventhScore"></td>
+                    </tr>
+                    <tr>
+                      <td>8th</td>
+                      <td id="eighthName"></td>
+                      <td id="eighthScore"></td>
+                    </tr>
+                      <tr>
+                        <td>9th</td>
+                        <td id="ninthName"></td>
+                        <td id="ninthScore"></td>
+                    </tr>
+                    <tr>
+                      <td>10th</td>
+                      <td id="tenthName"></td>
+                      <td id="tenthScore"></td>
+                    </tr>
+                </tbody>
+            </table>
+    <script>
+        function fetchScores() {
+            console.log('fetchScores was called')
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                // Typical action to be performed when the document is ready:
+                    
+                    document.getElementById("firstName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[0].playerName))
+
+                    document.getElementById("firstScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore))
+                    
+                    document.getElementById("secondName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[1].playerName))
+                    document.getElementById("secondScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[1].playerScore))
+                
+                    document.getElementById("thirdName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[2].playerName))
+                    document.getElementById("thirdScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[2].playerScore))
+                
+                    document.getElementById("fourthName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[3].playerName))
+                    document.getElementById("fourthScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[3].playerScore))
+                
+                    document.getElementById("fifthName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[4].playerName))
+                    document.getElementById("fifthScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[4].playerScore))
+                
+                    document.getElementById("sixthName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[5].playerName))
+                    document.getElementById("sixthScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[5].playerScore))
+                
+                    document.getElementById("seventhName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[6].playerName))
+                    document.getElementById("seventhScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[6].playerScore))
+                
+                    document.getElementById("eighthName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[7].playerName))
+                    document.getElementById("eighthScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[7].playerScore))
+                
+                    document.getElementById("ninthName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[8].playerName))
+                    document.getElementById("ninthScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[8].playerScore))
+                
+                    document.getElementById("tenthName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[9].playerName))
+                    document.getElementById("tenthScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[9].playerScore))        
+                }
+            };
+            xhttp.open("GET", "scores.json", true);
+            xhttp.send();
+        }
+
+        function cleanScores(string){
+             return string.replace(/"/g,"").toUpperCase();
+        }   
+    </script>
+</body>
+</html>

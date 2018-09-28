@@ -130,7 +130,7 @@
         #invisibleDate{
             display: none;
         }
-        table{
+        /* table{
             font-family: 'orange_kid';
             background-color: black;
             color: beige;
@@ -151,7 +151,7 @@
         thead{
             background-color: #333;
             color: #fff;
-        }
+        } */
 
 
     </style>
@@ -161,7 +161,7 @@
     <img id="map" src="https://www.maps.com/media/catalog/product/cache/1/thumbnail/17f82f742ffe127f42dca9de82fb58b1/m/d/mdc1_wor_asia.jpg">
 
     <div id="demo">
-        <input type="text" id="input">
+        <!-- <input type="text" id="input"> -->
         <div id="nameEntry">
             <form method="POST" action="/scores">
                 <span id="nameEntryText"></span>
@@ -178,7 +178,7 @@
         <div id="timerDisplay">
             <h1 id="timerDisplayText"></h1>
         </div>
-        <table id="table">
+        <!-- <table id="table">
                 <thead>
                     <tr>
                         <th colspan="3">HIGH SCORES</th>
@@ -236,10 +236,10 @@
                       <td id="tenthScore"></td>
                     </tr>
                 </tbody>
-            </table>
+            </table> -->
     </div>
     <script>
-        document.getElementById('input').focus();
+        // document.getElementById('input').focus();
         //movement of map, not character.
         let left;
         let right;
@@ -295,6 +295,8 @@
         let talkingToTessie = false;
 
         let documents;
+        
+        let tessieMessage
 
         // document.getElementById('scoreboardButton').addEventListener('click', function(event) {
         //     event.preventDefault()
@@ -315,7 +317,8 @@
         }
 
         function walk(event) {
-            document.getElementById('input').removeEventListener('keydown', walk);
+            // document.getElementById('input')
+            window.removeEventListener('keydown', walk);
             // console.log(event.keyCode)
             if (event.keyCode === 39 && !disableMovement) {
                 right1();
@@ -394,7 +397,8 @@
             // down = false;
             // right = false;
 
-            document.getElementById('input').addEventListener('keydown', walk);
+            // document.getElementById('input')
+            window.addEventListener('keydown', walk);
             // document.getElementById('input').addEventListener('keydown', walkDiagonally);
 
 
@@ -529,9 +533,11 @@
             }
         }
 
-        document.getElementById('input').addEventListener('keydown', walk);
+        // document.getElementById('input')
+        window.addEventListener('keydown', walk);
         // document.getElementById('input').addEventListener('keydown', walkDiagonally);
-        document.getElementById('input').addEventListener('keyup', stopWalking);
+        // document.getElementById('input')
+        window.addEventListener('keyup', stopWalking);
 
         //Paula
 
@@ -588,13 +594,14 @@
                 textBox = document.createElement('p');
                 textBox.setAttribute("id", "tessieBox")
                 document.body.appendChild(textBox)
-                typer("sup, nerd.", 'tessieBox')
+                typer(tessieMessage, 'tessieBox')
             }
-            else { console.log('didnt work, but function fired') }
+
         }
 
         function talkToPaula() {
-            document.getElementById('table').style.display = 'none';
+            disableMovement = true;
+            // document.getElementById('table').style.display = 'none';
             if
             (document.getElementById('paula').style.left.slice(0, -2) > 600
             &&
@@ -635,6 +642,7 @@
             startGame();
         }
         function startGame() {
+            disableMovement = false;
             clearTimeout(paulaTO);
             paulaRunsAway();
             playMusic();
@@ -759,47 +767,19 @@
             console.log('fetchScores was called')
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
+                console.log(this.readyState)
+                console.log(this.status)
                 if (this.readyState == 4 && this.status == 200) {
                 // Typical action to be performed when the document is ready:
-                    
-                    console.log(JSON.parse(xhttp.responseText)[0].playerName)
-                    
-                    document.getElementById("firstName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[0].playerName)
-                    document.getElementById("firstScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore)
-                    
-                    document.getElementById("secondName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[1].playerName)
-                    document.getElementById("secondScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[1].playerScore)
-                
-                    document.getElementById("thirdName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[2].playerName)
-                    document.getElementById("thirdScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[2].playerScore)
-                
-                    document.getElementById("fourthName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[3].playerName)
-                    document.getElementById("fourthScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[3].playerScore)
-                
-                    document.getElementById("fifthName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[4].playerName)
-                    document.getElementById("fifthScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[4].playerScore)
-                
-                    document.getElementById("sixthName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[5].playerName)
-                    document.getElementById("sixthScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[5].playerScore)
-                
-                    document.getElementById("seventhName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[6].playerName)
-                    document.getElementById("seventhScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[6].playerScore)
-                
-                    document.getElementById("eighthName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[7].playerName)
-                    document.getElementById("eighthScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[7].playerScore)
-                
-                    document.getElementById("ninthName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[8].playerName)
-                    document.getElementById("ninthScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[8].playerScore)
-                
-                    document.getElementById("tenthName").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[9].playerName)
-                    document.getElementById("tenthScore").innerHTML = JSON.stringify(JSON.parse(xhttp.responseText)[9].playerScore)
-                
-                }
+                      console.log("in the pertinant if")
+              tessieMessage = "Hi" 
+            //   I'm " + JSON.stringify(JSON.parse(xhttp.responseText)[0].playerName) + ". Think you can beat my high score of " + JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore).replace(/"/g,"") + "? " + JSON.stringify(JSON.parse(xhttp.responseText)[0].message).replace(/"/g,"")
+
             };
             xhttp.open("GET", "scores.json", true);
             xhttp.send();
         }
-   
+    }
 
         animatePaula1();
         positionPaula();

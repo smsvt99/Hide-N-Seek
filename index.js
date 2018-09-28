@@ -17,25 +17,8 @@ http.createServer(function (request, response) {
     let path = request.url;
     let sortedDocuments;
 
-    //   console.log("here is the request.url: " + path)
-    //   myUrl = require('url').parse(request.url)
-    //   console.log('here is the url.pathname: ' + myUrl.pathname)
+    // response.setHeader('Content-Type', contentType + '; charset=utf-8');
 
-    // if (request.method === 'GET' && path === '/scoreboard') {
-    //         console.log("I did a GET")
-    //             MongoClient.connect(url, function(err, client) {
-    //             assert.equal(null, err);
-    //             console.log("Connected successfully to server");
-
-    //             const db = client.db(dbName);
-
-    //             getDocuments(db, function(documents) {
-    //                 console.log('Log from line 27: ' + JSON.stringify(documents))
-
-    //                 client.close();
-    //             });
-    //           });
-    //     }
     if (path === '/') {
         console.log('slash path')
         file = 'index.html';
@@ -47,9 +30,8 @@ http.createServer(function (request, response) {
 
             getDocuments(db, function (documents) {
                 // sortDocuments(documents,i,j);
-                console.log(documents)
+                console.log('DOCS' + documents)
                 function sortDocuments() {
-                    console.log('sorting documents')
                     if (documents.length !== 0) {
                         if (documents[i].playerScore == j) {
                             newArray.push(documents[i])
@@ -71,14 +53,13 @@ http.createServer(function (request, response) {
                             }
                         }
                     }
-                    console.log('done sorting') 
                 }
                 
                 sortDocuments()
 
                 backwardsArray = newArray.reverse()
                 let scoreString = JSON.stringify(backwardsArray)
-                console.log(scoreString)
+                // console.log(scoreString)
                 fs.writeFileSync('scores.json', scoreString)
                 client.close();
             });
@@ -86,7 +67,7 @@ http.createServer(function (request, response) {
 
     }
     if (request.method === 'POST' && path === '/scores') {
-        file = 'index.html';
+        file = 'scoreBoard.html';
         console.log('did a post')
         let theBody = '';
         request.on('data', chunk => {
@@ -108,9 +89,10 @@ http.createServer(function (request, response) {
             });
         });
         request.on('end', () => {
-            console.log(parsedBody);
+            // console.log(parsedBody);
             response.end('ok');
         });
+        // response.redirect('/scores');
     }
 
     else if (path.indexOf('.') === -1) {
@@ -133,8 +115,7 @@ http.createServer(function (request, response) {
         data = "Error: " + error.toString();
         response.statusCode = 404;
     }
-
-    response.setHeader('Content-Type', contentType + '; charset=utf-8');
+    //setHeaderWasHere
     response.write(data);
     response.end();
 
@@ -142,7 +123,7 @@ http.createServer(function (request, response) {
 
 console.log("Listening on port " + port);
 
-//MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO
+//MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO MONGO
 
 const insertDocuments = function (db, callback) {
     // Get the documents collection
