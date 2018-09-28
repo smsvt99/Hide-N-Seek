@@ -1,0 +1,142 @@
+        @font-face {
+            font-family: 'orange_kid';
+            src: url(orange_kid.ttf) format('truetype'),
+            url(orange_kid.woff) format('woff')
+        }
+
+        #image {
+            height: 70px;
+            width: 44px;
+            background: url('newSprites.png') 0px 0px no-repeat;
+            position: absolute;
+            left: 680px;
+            top: 400px;
+        }
+
+        #paula {
+            height: 63px;
+            width: 43px;
+            background: url('moreSprites.png') 0px 0px no-repeat;
+            position: absolute;
+            left: 1300px;
+            top: 500px;
+        }
+
+        #input {
+            z-index: -2;
+        }
+
+        #map {
+            position: absolute;
+            z-index: -1;
+        }
+
+        body p {
+            height: 250px;
+            width: 60%;
+            font-family: 'orange_kid';
+            display: block;
+            background-color: black;
+            color: beige;
+            font-size: 36px;
+            padding: 20px;
+            border-style: groove;
+            border-color: beige;
+            border-width: 8px;
+            border-radius: 10px;
+            letter-spacing: 5px;
+            z-index: 1;
+        }
+
+        body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #nameEntry {
+            height: 250px;
+            width: 60%;
+            font-family: 'orange_kid';
+            display: block;
+            background-color: black;
+            color: beige;
+            font-size: 36px;
+            padding: 20px;
+            border-style: groove;
+            border-color: beige;
+            border-width: 8px;
+            border-radius: 10px;
+            letter-spacing: 5px;
+            z-index: 1;
+            display: none;
+        }
+
+        #timerDisplay {
+            height: 150px;
+            width: 150px;
+            font-family: 'orange_kid';
+            display: block;
+            background-color: black;
+            color: #f5f5dc;
+            font-size: 45px;
+            border-style: groove;
+            border-color: beige;
+            border-width: 8px;
+            border-radius: 10px;
+            letter-spacing: 5px;
+            z-index: 1;
+            padding: 0px;
+            margin: 0px;
+            opacity: .5;
+            position: absolute;
+            left: 2%;
+            top: 80%;
+            display: none;
+        }
+
+        #timerDisplay h1 {
+            text-align: center;
+            position: relative;
+            left: 5%;
+            top: 7%;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #tessie {
+            background: url('tessie.png') 0px 0px no-repeat;
+            z-index: 2;
+            height: 300px;
+            width: 200px;
+            position: absolute;
+            left: 1600px;
+            top: 400px;
+        }
+
+        #invisibleScore {
+            display: none;
+        }
+
+        #invisibleDate {
+            display: none;
+        }
+        #instructions{
+            background-color: rgba(0,0,0,.8);
+            z-index: 100;
+            color: beige;
+            height: 50%;
+            width: 75%;
+            text-align: center;
+            border: 3px solid beige;
+            border-radius: 5px;
+            position: absolute;
+            left: 13%;
+            top: 25%;
+            padding-top: 3%;
+            font-size: 50px;
+            font-family: 'orange_kid';
+        }
+        #tessieBox{
+            height: 70%
+        }
