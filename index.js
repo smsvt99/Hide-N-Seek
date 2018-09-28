@@ -95,6 +95,60 @@ http.createServer(function (request, response) {
                 });
             });
         });
+        // TEST STUFF HERE
+        setTimeout(function() {
+        MongoClient.connect(url, function (err, client) {
+            assert.equal(null, err);
+            console.log("Connected successfully to server");
+
+            const db = client.db(dbName);
+
+            getDocuments(db, function (documents) {
+                // sortDocuments(documents,i,j);
+                console.log(typeof documents)
+               
+                // function sortDocuments(){
+                // console.log(typeof JSON.stringify(documents)) 
+                //     if (documents.length !== 0) {
+                //         if (documents[i].playerScore == j) {
+                //             newArray.push(documents[i])
+                //             documents.splice(i, 1);
+                //             if (i <= documents.length - 1) {
+                //                 sortDocuments();
+                //             } else {
+                //                 i = 0
+                //                 sortDocuments();
+                //             }
+                //         } else {
+                //             if (i + 1 < documents.length) {
+                //                 i = i + 1
+                //                 sortDocuments();
+                //             } else {
+                //                 i = 0
+                //                 j = j + 1
+                //                 sortDocuments()
+                //             }
+                //         }
+                //     }
+                // }
+                
+                // sortDocuments()
+
+                documents.sort(function(a,b){
+                    return b.playerScore - a.playerScore
+                })
+                // console.log(JSON.stringify(documents))
+
+                // backwardsArray = newArray.reverse()
+                let scoreString = JSON.stringify(documents)
+                // console.log(scoreString)
+                fs.writeFileSync('scores.json', scoreString)
+                client.close();
+            });
+        });
+    }, 4000)
+        //TEST STUFF HERE
+
         request.on('end', () => {
             // console.log(parsedBody);
             response.end('ok');
