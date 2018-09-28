@@ -238,6 +238,7 @@
                 </tbody>
             </table> -->
     </div>
+    <!-- <script src="index.js"></script> -->
     <script>
         // document.getElementById('input').focus();
         //movement of map, not character.
@@ -297,6 +298,7 @@
         let documents;
         
         let tessieMessage;
+        let response;
 
         // document.getElementById('scoreboardButton').addEventListener('click', function(event) {
         //     event.preventDefault()
@@ -594,7 +596,7 @@
                 textBox = document.createElement('p');
                 textBox.setAttribute("id", "tessieBox")
                 document.body.appendChild(textBox)
-                typer(tessieMessage, 'tessieBox')
+                typer(`hi ${tessieMessage}`, 'tessieBox')
             }
 
         }
@@ -772,14 +774,24 @@
                 if (this.readyState == 4 && this.status == 200) {
                 // Typical action to be performed when the document is ready:
                       console.log("in the pertinant if")
-              tessieMessage = "Hi" 
             //   I'm " + JSON.stringify(JSON.parse(xhttp.responseText)[0].playerName) + ". Think you can beat my high score of " + JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore).replace(/"/g,"") + "? " + JSON.stringify(JSON.parse(xhttp.responseText)[0].message).replace(/"/g,"")
+                    // console.log('at the if')
+                    // response = JSON.parse(xhttp.responseText[0]);
 
-            };
+            }; 
             xhttp.open("GET", "scores.json", true);
             xhttp.send();
+            console.log('response: ' + xhttp.responseText)
         }
+        // setTimeout(function(){
+        //     console.log(typeof response)
+        // },4000)
+        // setTimeout(function(){
+        // tessieMessage = "I'm " + JSON.stringify(JSON.parse(xhttp.responseText)[0].playerName)
+        //  + ". Think you can beat my high score of " + JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore).replace(/"/g,"") + "? " + JSON.stringify(JSON.parse(xhttp.responseText)[0].message).replace(/"/g,"")
+        // }, 3000)
     }
+
 
         animatePaula1();
         positionPaula();
