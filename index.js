@@ -216,8 +216,8 @@ const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
 // Connection URL
-const url = 'mongodb://everyman:everyman1@ds255308.mlab.com:55308/hidenseek';
-
+// const url = 'mongodb://everyman:everyman1@ds255308.mlab.com:55308/hidenseek';
+const url = process.env.MONGODB_URI
 // Database Name
 const dbName = 'hidenseek';
 
