@@ -31,33 +31,6 @@ http.createServer(function (request, response) {
             getDocuments(db, function (documents) {
                 // sortDocuments(documents,i,j);
                 console.log(typeof documents)
-               
-                // function sortDocuments(){
-                // console.log(typeof JSON.stringify(documents)) 
-                //     if (documents.length !== 0) {
-                //         if (documents[i].playerScore == j) {
-                //             newArray.push(documents[i])
-                //             documents.splice(i, 1);
-                //             if (i <= documents.length - 1) {
-                //                 sortDocuments();
-                //             } else {
-                //                 i = 0
-                //                 sortDocuments();
-                //             }
-                //         } else {
-                //             if (i + 1 < documents.length) {
-                //                 i = i + 1
-                //                 sortDocuments();
-                //             } else {
-                //                 i = 0
-                //                 j = j + 1
-                //                 sortDocuments()
-                //             }
-                //         }
-                //     }
-                // }
-                
-                // sortDocuments()
 
                 documents.sort(function(a,b){
                     return b.playerScore - a.playerScore
@@ -85,6 +58,9 @@ http.createServer(function (request, response) {
             parsedBody = JSON.parse(theNewestestBody)
 
             MongoClient.connect(url, function (err, client) {
+                if (err){
+                    console.log('E R R O R: : ' + err)
+                }
                 assert.equal(null, err);
                 console.log("Connected successfully to server");
 
@@ -106,33 +82,6 @@ http.createServer(function (request, response) {
             getDocuments(db, function (documents) {
                 // sortDocuments(documents,i,j);
                 console.log(typeof documents)
-               
-                // function sortDocuments(){
-                // console.log(typeof JSON.stringify(documents)) 
-                //     if (documents.length !== 0) {
-                //         if (documents[i].playerScore == j) {
-                //             newArray.push(documents[i])
-                //             documents.splice(i, 1);
-                //             if (i <= documents.length - 1) {
-                //                 sortDocuments();
-                //             } else {
-                //                 i = 0
-                //                 sortDocuments();
-                //             }
-                //         } else {
-                //             if (i + 1 < documents.length) {
-                //                 i = i + 1
-                //                 sortDocuments();
-                //             } else {
-                //                 i = 0
-                //                 j = j + 1
-                //                 sortDocuments()
-                //             }
-                //         }
-                //     }
-                // }
-                
-                // sortDocuments()
 
                 documents.sort(function(a,b){
                     return b.playerScore - a.playerScore
@@ -217,31 +166,8 @@ const assert = require('assert');
 
 // Connection URL
 // const url = 'mongodb://everyman:everyman1@ds255308.mlab.com:55308/hidenseek';
-const url = process.env.MONGODB_URI
+const url = process.env.MONGODB_URI || 'mongodb://everyman:everyman1@ds255308.mlab.com:55308/hidenseek'
 // Database Name
 const dbName = 'hidenseek';
 
 
-// function sortDocuments() {
-//     if (documents.length !== 0) {
-//         if (documents[i].playerScore == j) {
-//             newArray.push(documents[i])
-//             documents.splice(i, 1);
-//             if (i <= documents.length - 1) {
-//                 sortDocuments();
-//             } else {
-//                 i = 0
-//                 sortDocuments();
-//             }
-//         } else {
-//             if (i + 1 < documents.length) {
-//                 i = i + 1
-//                 sortDocuments();
-//             } else {
-//                 i = 0
-//                 j = j + 1
-//                 sortDocuments()
-//             }
-//         }
-//     } 
-// }
