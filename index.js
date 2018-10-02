@@ -22,7 +22,7 @@ http.createServer(function (request, response) {
     if (path === '/') {
         console.log('slash path')
         file = 'index.html';
-        MongoClient.connect(url, function (err, client) {
+        MongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
             assert.equal(null, err);
             console.log("Connected successfully to server");
 
@@ -57,7 +57,7 @@ http.createServer(function (request, response) {
             theNewestestBody = theNewestBody.replace(/=/g, '":"')
             parsedBody = JSON.parse(theNewestestBody)
 
-            MongoClient.connect(url, function (err, client) {
+            MongoClient.connect(url,{ useNewUrlParser: true }, function (err, client) {
                 if (err){
                     console.log('E R R O R: : ' + err)
                 }
@@ -73,7 +73,7 @@ http.createServer(function (request, response) {
         });
         // TEST STUFF HERE
         setTimeout(function() {
-        MongoClient.connect(url, function (err, client) {
+        MongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
             assert.equal(null, err);
             console.log("Connected successfully to server");
 
