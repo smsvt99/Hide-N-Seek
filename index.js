@@ -1,26 +1,17 @@
 var fs = require('fs');
 var http = require('http');
 var mime = require('mime-types');
-let cursor;
-// let documents;
-let globalDocuments;
+// let cursor;
 
 var port = process.env.PORT || 5001;
-
-let i = 0;
-let j = 1;
-let newArray = []
 
 http.createServer(function (request, response) {
     let contentType = 'text/plain'
     let data;
     let path = request.url;
-    let sortedDocuments;
 
-    // response.setHeader('Content-Type', contentType + '; charset=utf-8');
 
     if (path === '/') {
-        console.log('slash path')
         file = 'index.html';
         MongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
             assert.equal(null, err);
@@ -29,17 +20,12 @@ http.createServer(function (request, response) {
             const db = client.db(dbName);
 
             getDocuments(db, function (documents) {
-                // sortDocuments(documents,i,j);
-                console.log(typeof documents)
 
-                documents.sort(function(a,b){
+                documents.sort(function (a, b) {
                     return b.playerScore - a.playerScore
                 })
-                // console.log(JSON.stringify(documents))
 
-                // backwardsArray = newArray.reverse()
                 let scoreString = JSON.stringify(documents)
-                // console.log(scoreString)
                 fs.writeFileSync('scores.json', scoreString)
                 client.close();
             });
@@ -57,8 +43,8 @@ http.createServer(function (request, response) {
             theNewestestBody = theNewestBody.replace(/=/g, '":"')
             parsedBody = JSON.parse(theNewestestBody)
 
-            MongoClient.connect(url,{ useNewUrlParser: true }, function (err, client) {
-                if (err){
+            MongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
+                if (err) {
                     console.log('E R R O R: : ' + err)
                 }
                 assert.equal(null, err);
@@ -69,53 +55,21 @@ http.createServer(function (request, response) {
                 insertDocuments(db, function () {
                     getDocuments(db, function (documents) {
 
-                        documents.sort(function(a,b){
+                        documents.sort(function (a, b) {
                             return b.playerScore - a.playerScore
                         })
 
                         let scoreString = JSON.stringify(documents)
-                        // console.log(scoreString)
                         fs.writeFileSync('scores.json', scoreString)
                         client.close();
                     });
                 });
             });
         });
-        // TEST STUFF HERE
-    //     setTimeout(function() {
-    //     MongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
-    //         if (err){
-    //             console.log("E R R O R : " + err)
-    //         }
-    //         assert.equal(null, err);
-    //         console.log("Connected successfully to server");
-
-    //         const db = client.db(dbName);
-
-    //         getDocuments(db, function (documents) {
-    //             // sortDocuments(documents,i,j);
-    //             console.log(typeof documents)
-
-    //             documents.sort(function(a,b){
-    //                 return b.playerScore - a.playerScore
-    //             })
-    //             // console.log(JSON.stringify(documents))
-
-    //             // backwardsArray = newArray.reverse()
-    //             let scoreString = JSON.stringify(documents)
-    //             // console.log(scoreString)
-    //             fs.writeFileSync('scores.json', scoreString)
-    //             client.close();
-    //         });
-    //     });
-    // }, 8000)
-        //TEST STUFF HERE
 
         request.on('end', () => {
-            // console.log(parsedBody);
             response.end('ok');
         });
-        // response.redirect('/scores');
     }
 
     else if (path.indexOf('.') === -1) {
@@ -138,7 +92,6 @@ http.createServer(function (request, response) {
         data = "Error: " + error.toString();
         response.statusCode = 404;
     }
-    //setHeaderWasHere
     response.write(data);
     response.end();
 
@@ -167,9 +120,6 @@ function getDocuments(db, callback) {
         if (error) {
             console.log(error)
         }
-        // console.log("log from line 128: ")
-        // console.log(documents)
-        //Response is not defined here.
         callback(documents)
     })
 }
