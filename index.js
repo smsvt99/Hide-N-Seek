@@ -74,6 +74,9 @@ http.createServer(function (request, response) {
         // TEST STUFF HERE
         setTimeout(function() {
         MongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
+            if (err){
+                console.log("E R R O R : " + err)
+            }
             assert.equal(null, err);
             console.log("Connected successfully to server");
 
@@ -95,7 +98,7 @@ http.createServer(function (request, response) {
                 client.close();
             });
         });
-    }, 4000)
+    }, 8000)
         //TEST STUFF HERE
 
         request.on('end', () => {
