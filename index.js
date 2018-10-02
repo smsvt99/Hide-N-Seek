@@ -179,7 +179,7 @@ const assert = require('assert');
 
 // Connection URL
 // const url = 'mongodb://everyman:everyman1@ds255308.mlab.com:55308/hidenseek';
-const url = process.env.MONGODB_URI || 'mongodb://everyman:everyman1@ds255308.mlab.com:55308/hidenseek'
+const url = process.env.MONGODB_URI || 'mongodb://everyman:everyman1@ds255308.mlab.com:55308/hidenseek?connectTimeoutMS=100000'
 // Database Name
 const dbName = 'hidenseek';
 
