@@ -67,38 +67,48 @@ http.createServer(function (request, response) {
                 const db = client.db(dbName);
 
                 insertDocuments(db, function () {
-                    client.close();
+                    getDocuments(db, function (documents) {
+
+                        documents.sort(function(a,b){
+                            return b.playerScore - a.playerScore
+                        })
+
+                        let scoreString = JSON.stringify(documents)
+                        // console.log(scoreString)
+                        fs.writeFileSync('scores.json', scoreString)
+                        client.close();
+                    });
                 });
             });
         });
         // TEST STUFF HERE
-        setTimeout(function() {
-        MongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
-            if (err){
-                console.log("E R R O R : " + err)
-            }
-            assert.equal(null, err);
-            console.log("Connected successfully to server");
+    //     setTimeout(function() {
+    //     MongoClient.connect(url, { useNewUrlParser: true }, function (err, client) {
+    //         if (err){
+    //             console.log("E R R O R : " + err)
+    //         }
+    //         assert.equal(null, err);
+    //         console.log("Connected successfully to server");
 
-            const db = client.db(dbName);
+    //         const db = client.db(dbName);
 
-            getDocuments(db, function (documents) {
-                // sortDocuments(documents,i,j);
-                console.log(typeof documents)
+    //         getDocuments(db, function (documents) {
+    //             // sortDocuments(documents,i,j);
+    //             console.log(typeof documents)
 
-                documents.sort(function(a,b){
-                    return b.playerScore - a.playerScore
-                })
-                // console.log(JSON.stringify(documents))
+    //             documents.sort(function(a,b){
+    //                 return b.playerScore - a.playerScore
+    //             })
+    //             // console.log(JSON.stringify(documents))
 
-                // backwardsArray = newArray.reverse()
-                let scoreString = JSON.stringify(documents)
-                // console.log(scoreString)
-                fs.writeFileSync('scores.json', scoreString)
-                client.close();
-            });
-        });
-    }, 8000)
+    //             // backwardsArray = newArray.reverse()
+    //             let scoreString = JSON.stringify(documents)
+    //             // console.log(scoreString)
+    //             fs.writeFileSync('scores.json', scoreString)
+    //             client.close();
+    //         });
+    //     });
+    // }, 8000)
         //TEST STUFF HERE
 
         request.on('end', () => {
