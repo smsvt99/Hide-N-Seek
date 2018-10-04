@@ -193,7 +193,6 @@ app.use(logRequests)
 app.use(express.static('public'))
 
 app.post('/scores'), (req, res) => {
-    res.send('fuck ya motha')
     res.sendFile('scoreBoard.html')
 }
 
