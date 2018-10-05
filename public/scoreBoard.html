@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>Hide-N-Seek Scoreboard</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
@@ -92,7 +91,6 @@
         }
     </style>
 </head>
-
 <body onload="timeout()">
     <div class="button" id="playAgain" onclick="playAgain()">Play Again</div>
     <div class="button" id="refresh" onclick="refresh()">Refresh Scores</div>
@@ -169,111 +167,69 @@
         }
 
         function displayScores(scores) {
-            document.getElementById("firstName").innerHTML = scores[0].playerName;
+            document.getElementById("firstName").innerHTML = scores[0].playerName.toUpperCase();
 
             document.getElementById("firstScore").innerHTML = scores[0].playerScore;
 
-            document.getElementById("secondName").innerHTML = scores[1].playerName;
+            document.getElementById("secondName").innerHTML = scores[1].playerName.toUpperCase();
 
             document.getElementById("secondScore").innerHTML = scores[1].playerScore;
 
-            document.getElementById("thirdName").innerHTML = scores[2].playerName;
+            document.getElementById("thirdName").innerHTML = scores[2].playerName.toUpperCase();
 
             document.getElementById("thirdScore").innerHTML = scores[2].playerScore;
 
-            document.getElementById("fourthName").innerHTML = scores[3].playerName;
+            document.getElementById("fourthName").innerHTML = scores[3].playerName.toUpperCase();
 
             document.getElementById("fourthScore").innerHTML = scores[3].playerScore;
 
-            document.getElementById("fifthName").innerHTML = scores[4].playerName;
+            document.getElementById("fifthName").innerHTML = scores[4].playerName.toUpperCase();
 
             document.getElementById("fifthScore").innerHTML = scores[4].playerScore;
 
-            document.getElementById("sixthName").innerHTML = scores[5].playerName;
+            document.getElementById("sixthName").innerHTML = scores[5].playerName.toUpperCase();
 
             document.getElementById("sixthScore").innerHTML = scores[5].playerScore;
 
-           document.getElementById("seventhName").innerHTML = scores[6].playerName;
+           document.getElementById("seventhName").innerHTML = scores[6].playerName.toUpperCase();
 
            document.getElementById("seventhScore").innerHTML = scores[6].playerScore;
 
-           document.getElementById("eighthName").innerHTML = scores[7].playerName;
+           document.getElementById("eighthName").innerHTML = scores[7].playerName.toUpperCase();
 
            document.getElementById("eighthScore").innerHTML = scores[7].playerScore;
 
-           document.getElementById("ninthName").innerHTML = scores[8].playerName;
+           document.getElementById("ninthName").innerHTML = scores[8].playerName.toUpperCase();
 
              document.getElementById("ninthScore").innerHTML = scores[8].playerScore;
 
-             document.getElementById("tenthName").innerHTML = scores[9].playerName;
+             document.getElementById("tenthName").innerHTML = scores[9].playerName.toUpperCase();
 
             document.getElementById("tenthScore").innerHTML = scores[9].playerScore;
         }
 
-        function cleanScores(string) {
-            return string.replace(/"/g, "").replace(/\+/g, ' ').toUpperCase();
-        }
         function playAgain(){
             window.location.href = '/'
         }
+
         function loading(){
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database.'
+            document.getElementById('loadingText').textContent = "Loading from Database"
+            let interval = setInterval(function(){
+                document.getElementById('loadingText').textContent += '.'
             }, 250)
             setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database..'
-            }, 500)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database...'
-            }, 750)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database....'
-            }, 1000)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database.....'
-            }, 1250)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database......'
-            }, 1500)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database.......'
-            }, 1750)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database........'
-            }, 1750)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database.........'
-            }, 2000)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database..........'
-            }, 2225)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database...........'
-            }, 2500)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database............'
-            }, 2750)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database.............'
-            }, 3000)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database..............'
-            }, 3250)
-            setTimeout(function(){
-                document.getElementById('loadingText').textContent = 'Loading from Database................'
-            }, 3500)
-            setTimeout(function(){
                 document.getElementById('loading').style.display = 'none'
-            }, 3750)
-            
+                clearInterval('interval')
+            }, 4000)
         }
-        loading();
+        
         function refresh(){
-            document.getElementById('loadingText').textContent = ''
-            document.getElementById('loading').style.display = 'block';
+            document.getElementById('loading').style.display = 'block'
             loading();
+            fetchScores();
         }
+        
+        loading();
     </script>
 </body>
-
 </html>

@@ -49,7 +49,7 @@ app.post('/scores', upload.array(), (req, res) => {
     });
 });
 
-let db_uri = process.env.MONGODB_URI || 'mongodb://everyman:everyman1@ds255308.mlab.com:55308/hidenseek?connectTimeoutMS=300000&retryWrites=true';
+let db_uri = process.env.MONGODB_URI
 
 MongoClient.connect(db_uri, { useNewUrlParser: true }, (error, client) => {
 
