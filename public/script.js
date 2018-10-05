@@ -526,21 +526,14 @@ function timeout() {
 }
 
 function fetchScores() {
-    console.log('fetchScores was called')
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log('in the magic if')
-            // Typical action to be performed when the document is ready:
-            console.log(xhttp.responseText)
-            tessieMessage = "I'm " + decodeURIComponent(JSON.stringify(JSON.parse(xhttp.responseText)[0].playerName).replace(/"/g, "").replace(/\+/, ' ').toUpperCase())
-                + ".<br><br> Think you can beat my HIGH SCORE of " + JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore).replace(/"/g, "") + "? <br><br>"
-                + decodeURIComponent(JSON.stringify(JSON.parse(xhttp.responseText)[0].message).replace(/"/g, "").replace(/\+/g, " ")) + "<br><br>(press 'Q' to exit)";
-            highScore = JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore).replace(/"/g, "")
-        }
-    };
-    xhttp.open("GET", "scores.json", true);
-    xhttp.send();
+    fetch('/scores')
+    .then(response => response.json())
+    .then(displayTessieMessage);
+}
+
+function displayTessieMessage(scores) {
+    tessieMessage = "I'm " + scores[0].playerName.toUpperCase() + ".<br><br> Think you can beat my HIGH SCORE of " + scores[0].playerScore + "? <br><br>" + scores[0].message + "<br><br>(press 'Q' to exit)";
+    highsScore = scores[0].playerScore;
 }
 
 animatePaula1();

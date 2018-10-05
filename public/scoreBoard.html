@@ -159,51 +159,55 @@
     </table>
     <script>
         function timeout() {
-            setTimeout("fetchScores()", 4000)
+            setTimeout(fetchScores, 4000)
         }
 
         function fetchScores() {
-            console.log('fetchScores was called')
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    console.log('in the magic if')
-                    // Typical action to be performed when the document is ready:
+            fetch('/scores')
+            .then(response => response.json())
+            .then(displayScores);
+        }
 
-                    document.getElementById("firstName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[0].playerName))
+        function displayScores(scores) {
+            document.getElementById("firstName").innerHTML = scores[0].playerName;
 
-                    document.getElementById("firstScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[0].playerScore))
+            document.getElementById("firstScore").innerHTML = scores[0].playerScore;
 
-                    document.getElementById("secondName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[1].playerName))
-                    document.getElementById("secondScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[1].playerScore))
+            document.getElementById("secondName").innerHTML = scores[1].playerName;
 
-                    document.getElementById("thirdName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[2].playerName))
-                    document.getElementById("thirdScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[2].playerScore))
+            document.getElementById("secondScore").innerHTML = scores[1].playerScore;
 
-                    document.getElementById("fourthName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[3].playerName))
-                    document.getElementById("fourthScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[3].playerScore))
+            document.getElementById("thirdName").innerHTML = scores[2].playerName;
 
-                    document.getElementById("fifthName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[4].playerName))
-                    document.getElementById("fifthScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[4].playerScore))
+            document.getElementById("thirdScore").innerHTML = scores[2].playerScore;
 
-                    document.getElementById("sixthName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[5].playerName))
-                    document.getElementById("sixthScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[5].playerScore))
+            document.getElementById("fourthName").innerHTML = scores[3].playerName;
 
-                    document.getElementById("seventhName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[6].playerName))
-                    document.getElementById("seventhScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[6].playerScore))
+            document.getElementById("fourthScore").innerHTML = scores[3].playerScore;
 
-                    document.getElementById("eighthName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[7].playerName))
-                    document.getElementById("eighthScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[7].playerScore))
+            document.getElementById("fifthName").innerHTML = scores[4].playerName;
 
-                    document.getElementById("ninthName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[8].playerName))
-                    document.getElementById("ninthScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[8].playerScore))
+            document.getElementById("fifthScore").innerHTML = scores[4].playerScore;
 
-                    document.getElementById("tenthName").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[9].playerName))
-                    document.getElementById("tenthScore").innerHTML = cleanScores(JSON.stringify(JSON.parse(xhttp.responseText)[9].playerScore))
-                }
-            };
-            xhttp.open("GET", "scores.json", true);
-            xhttp.send();
+            document.getElementById("sixthName").innerHTML = scores[5].playerName;
+
+            document.getElementById("sixthScore").innerHTML = scores[5].playerScore;
+
+           document.getElementById("seventhName").innerHTML = scores[6].playerName;
+
+           document.getElementById("seventhScore").innerHTML = scores[6].playerScore;
+
+           document.getElementById("eighthName").innerHTML = scores[7].playerName;
+
+           document.getElementById("eighthScore").innerHTML = scores[7].playerScore;
+
+           document.getElementById("ninthName").innerHTML = scores[8].playerName;
+
+             document.getElementById("ninthScore").innerHTML = scores[8].playerScore;
+
+             document.getElementById("tenthName").innerHTML = scores[9].playerName;
+
+            document.getElementById("tenthScore").innerHTML = scores[9].playerScore;
         }
 
         function cleanScores(string) {
