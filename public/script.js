@@ -533,7 +533,7 @@ function fetchScores() {
 
 function displayTessieMessage(scores) {
     tessieMessage = "I'm " + scores[0].playerName.toUpperCase() + ".<br><br> Think you can beat my HIGH SCORE of " + scores[0].playerScore + "? <br><br>" + scores[0].message + "<br><br>(press 'Q' to exit)";
-    highsScore = scores[0].playerScore;
+    highScore = scores[0].playerScore;
 }
 
 animatePaula1();
