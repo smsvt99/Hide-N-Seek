@@ -532,8 +532,12 @@ function fetchScores() {
 }
 
 function displayTessieMessage(scores) {
-    tessieMessage = "I'm " + scores[0].playerName.toUpperCase() + ".<br><br> Think you can beat my HIGH SCORE of " + scores[0].playerScore + "? <br><br>" + scores[0].message.replace(/\+/gi, ' ') + "<br><br>(press 'Q' to exit)";
+    tessieMessage = `I'm  ${cleanString(scores[0].playerName.toUpperCase())} <br><br> Think you can beat my HIGH SCORE of ${scores[0].playerScore} ? <br><br> ${cleanString(scores[0].message)} <br><br>(press 'Q' to exit)`;
+    
     highScore = scores[0].playerScore;
+}
+function cleanString(string){
+    return string.replace(/\+/gi,' ')
 }
 
 animatePaula1();
