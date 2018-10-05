@@ -37,7 +37,6 @@ app.get('/scores', (req, res) => {
             return b.playerScore - a.playerScore;
         });
         let scoreString = JSON.stringify(scores);
-        fs.writeFileSync('public/scores.json', scoreString);
         res.send(scores);
     });
 });
